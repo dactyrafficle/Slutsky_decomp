@@ -1,0 +1,123 @@
+
+<html>
+ <head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel='stylesheet' href='main.css'>
+</head>
+
+<div class='section'> 
+
+<div class='sub-section' id='infobox'>
+
+<table class='mytables'>
+ <tr>
+  <td></td>
+  <td colspan='2'>INITIAL</td>
+  <td colspan='2'>FINAL</td>
+ </tr>
+ <tr>
+  <td></td>
+  <td>range</td>
+  <td>number</td>
+  <td>range</td>
+  <td>number</td>
+ </tr>
+ <tr>
+  <td>alpha</td>
+  <td><input type='range' step='0.001' min='0.01' max='0.99' value='0.3' id='input_alpha_initial'></td>
+  <td><span id='alpha_initial'></span></td>
+  <td><input type='range' disabled step='0.001' min='0.01' max='0.99' value='0.3' id='input_alpha_final'></td>
+  <td><span id='alpha_final'></span></td>
+ </tr>
+ <tr>
+  <td>budget</td>
+  <td><input type='range' step='1' min='1' max='200' value='134' id='input_budget_initial'></td>
+  <td><span id='budget_initial'></span></td>
+  <td><input type='range' disabled step='1' min='1' max='200' value='134' id='input_budget_final'></td>
+  <td><span id='budget_final'></span></td>
+ </tr>
+ <tr>
+  <td>px</td>
+  <td><input type='range' step='0.01' min='0.2' max='20' value='2' id='input_px_initial'></td>
+  <td><span id='px_initial'></span></td>
+  <td><input type='range' step='0.01' min='0.2' max='20' value='3' id='input_px_final'></td>
+  <td><span id='px_final'></span></td>
+ </tr>
+ <tr>
+  <td>py</td>
+  <td><input type='range' step='0.01' min='0.2' max='20' value='3' id='input_py_initial'></td>
+  <td><span id='py_initial'></span></td>
+  <td><input type='range' step='0.01' min='0.2' max='20' value='3' id='input_py_final'></td>
+  <td><span id='py_final'></span></td>
+ </tr>
+</table>
+
+ <table class='mytables' id='infobox2'>
+  <tr>
+   <td></td>
+   <td>INITIAL</td>
+   <td colspan='2'>ALLOCATION</td>
+   <td colspan='2'>RESPONSE</td>
+  </tr>
+  <tr>
+   <td></td>
+   <td></td>
+   <td id=''>MARSHALLIAN</td>
+   <td id=''>HICKSIAN</td>
+   <td>INCOME</td>
+   <td>SUBSTITUTION</td>
+  </tr>
+  <tr>
+   <td>BUDGET</td>
+   <td></td>
+   <td></td>
+   <td></td>
+  </tr>
+  <tr>
+   <td>PRICES</td>
+   <td><span id='prices-initial'></span></td>
+   <td><span id='prices-marshallian'></span></td>
+   <td><span id='prices-hicksian'></span></td>
+  </tr>
+  <tr>
+   <td>ALLOCATION</td>
+   <td><span id='allocation-initial'></span></td>
+   <td><span id='allocation-marshallian'></span></td>
+   <td><span id='allocation-hicksian'></span></td>
+  </tr>
+  <tr>
+   <td>UTILITY</td>
+   <td><span id='utility-initial'></span></td>
+   <td><span id='utility-marshallian'></span></td>
+   <td><span id='utility-hicksian'></span></td>
+  </tr>
+ </table>
+
+</div>
+
+ <div class='section'>
+  <p> use this to show the slutsky decomposition </p>
+  <p> a change in px causes the hicksian-y to shift, and visa versa. </p>
+  <p> decomp: slutsky  to show when sub is always negative, and income can go either way </p>
+  <p> graph lnpx v lnx version of demands - can see CES in cobbdouglas </p>
+ </div>
+
+</div>
+
+<div class='section'>
+ <div class='section'>
+  <div id='container-a'></div>
+ </div>
+ <div class='section'>
+  <div id='container-b'></div>
+  <div id='container-c'></div>
+ </div>
+</div>
+
+<script src='Box.js'></script>
+<script src='setup.js'></script>
+
+<script></script>
+
+
