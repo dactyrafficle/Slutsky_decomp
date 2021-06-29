@@ -10,76 +10,57 @@
 
 <div class='sub-section' id='infobox'>
 
-<table class='mytables'>
+<table class='mytables' id='myparameters'>
  <tr>
-  <td></td>
-  <td colspan='2'>INITIAL</td>
-  <td colspan='2'>FINAL</td>
- </tr>
- <tr>
-  <td></td>
-  <td>range</td>
-  <td>number</td>
-  <td>range</td>
-  <td>number</td>
+  <td>PARAM</td>
+  <td colspan='1'>INITIAL</td>
+  <td colspan='1'>FINAL</td>
  </tr>
  <tr>
   <td>alpha</td>
-  <td><input type='range' step='0.001' min='0.01' max='0.99' value='0.3' id='input_alpha_initial'></td>
-  <td><span id='alpha_initial'></span></td>
-  <td><input type='range' disabled step='0.001' min='0.01' max='0.99' value='0.3' id='input_alpha_final'></td>
-  <td><span id='alpha_final'></span></td>
+  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.388' id='input_alpha_initial'></td>
+  <td><input class='myinputs' type='number' disabled step='0.001' min='0.01' max='0.99' value='0.388' id='input_alpha_final'></td>
  </tr>
  <tr>
   <td>budget</td>
-  <td><input type='range' step='1' min='1' max='200' value='134' id='input_budget_initial'></td>
-  <td><span id='budget_initial'></span></td>
-  <td><input type='range' disabled step='1' min='1' max='200' value='134' id='input_budget_final'></td>
-  <td><span id='budget_final'></span></td>
+  <td><input class='myinputs' type='number' step='1' min='1' max='200' value='108' id='input_budget_initial'></td>
+  <td><input class='myinputs' type='number' disabled step='1' min='1' max='200' value='108' id='input_budget_final'></td>
  </tr>
  <tr>
   <td>px</td>
-  <td><input type='range' step='0.01' min='0.2' max='20' value='2' id='input_px_initial'></td>
-  <td><span id='px_initial'></span></td>
-  <td><input type='range' step='0.01' min='0.2' max='20' value='3' id='input_px_final'></td>
-  <td><span id='px_final'></span></td>
+  <td><input class='myinputs' type='number' step='0.1' min='0.1' max='20' value='2' id='input_px_initial'></td>
+  <td><input class='myinputs' type='number' step='0.1' min='0.1' max='20' value='4.1' id='input_px_final'></td>
  </tr>
  <tr>
   <td>py</td>
-  <td><input type='range' step='0.01' min='0.2' max='20' value='3' id='input_py_initial'></td>
-  <td><span id='py_initial'></span></td>
-  <td><input type='range' step='0.01' min='0.2' max='20' value='3' id='input_py_final'></td>
-  <td><span id='py_final'></span></td>
+  <td><input class='myinputs' type='number' step='0.1' min='0.1' max='20' value='2.7' id='input_py_initial'></td>
+  <td><input class='myinputs'  type='number' step='0.1' min='0.1' max='20' value='2.7' id='input_py_final'></td>
  </tr>
 </table>
 
+</div>
+
+<div class='sub-section'>
  <table class='mytables' id='infobox2'>
   <tr>
    <td></td>
    <td>INITIAL</td>
-   <td colspan='2'>ALLOCATION</td>
-   <td colspan='2'>RESPONSE</td>
+   <td colspan='2'>RESPONSE ALLOCATIONS</td>
   </tr>
   <tr>
    <td></td>
    <td></td>
    <td id=''>MARSHALLIAN</td>
    <td id=''>HICKSIAN</td>
-   <td>INCOME</td>
-   <td>SUBSTITUTION</td>
   </tr>
+
   <tr>
-   <td>BUDGET</td>
-   <td></td>
-   <td></td>
-   <td></td>
+   <td>EXPENDITURE</td>
+   <td><span id='expenditure-initial'></span></td>
+   <td><span id='expenditure-marshallian'></span></td>
+   <td><span id='expenditure-hicksian'></span></td>
   </tr>
-  <tr>
-   <td>PRICES</td>
-   <td><span id='prices-initial'></span></td>
-   <td><span id='prices-marshallian'></span></td>
-   <td><span id='prices-hicksian'></span></td>
-  </tr>
+
   <tr>
    <td>ALLOCATION</td>
    <td><span id='allocation-initial'></span></td>
@@ -93,29 +74,53 @@
    <td><span id='utility-hicksian'></span></td>
   </tr>
  </table>
-
 </div>
 
- <div class='section'>
-  <p> use this to show the slutsky decomposition </p>
-  <p> a change in px causes the hicksian-y to shift, and visa versa. </p>
-  <p> decomp: slutsky  to show when sub is always negative, and income can go either way </p>
-  <p> graph lnpx v lnx version of demands - can see CES in cobbdouglas </p>
- </div>
+<div class='sub-section'>
+ <table class='mytables'>
+  <tr><td></td><td>INITIAL</td><td>SUB</td><td>INCOME</td><td>FINAL</td></tr>
+  <tr><td>x</td><td>SUB</td><td id='sub-effect-x'></td><td id='income-effect-x'></td><td id='x-final'></td></tr>
+  <tr><td>y</td><td>SUB</td><td id='sub-effect-y'></td><td id='income-effect-y'></td><td id='y-final'></td></tr>
+ </table>
+</div>
 
+</div>
 </div>
 
 <div class='section'>
  <div class='section'>
-  <div id='container-a'></div>
+  <div id='container-b'></div>
  </div>
  <div class='section'>
-  <div id='container-b'></div>
-  <div id='container-c'></div>
+  <div id='container-bx' style='display: inline-block;'></div>
+  <div id='container-by' style='display: inline-block;'></div>
  </div>
 </div>
 
-<script src='Box.js'></script>
+ <div class='section'>
+  <p> a change in px causes the hicksian-y to shift, and visa versa. </p>
+  <p> decomp: slutsky  to show when sub is always negative, and income can go either way </p>
+  <p><span class='math'>x_c^*=u_0 \big ( \dfrac{p_y}{p_x} \cdot \dfrac{\alpha}{1-\alpha} \big ) ^ {1-\alpha}</span></p>
+<p> when prices change, that's just movement along the initial marshallian demand curve. </p>
+<p>in fact, no price change changes the marshallian demand curve</p>
+
+<p> in fact, a change in px will not cause any shift or change in either x or xc </p>
+
+<p> but it will cause a change in yc, the hicksian demand curve for y. </p>
+<p> log demand is good because the hicksian slope tells u the elasticity, IF the underlying fn is cb </p>
+
+ </div>
+
+<script src='https://cdn.jsdelivr.net/gh/dactyrafficle/Box/Box.js'></script>
+<script src='GET_MARSHALLIAN_ALLOCATION.js'></script>
+<script src='GET_HICKSIAN_ALLOCATION.js'></script>
+<script src='UPDATE_PARAMETERS.js'></script>
+<script src='UPDATE_TABLES.js'></script>
+<script src='GET_MARSHALLIAN_LOG_DEMAND_CURVE.js'></script>
+<script src='GET_HICKSIAN_LOG_DEMAND_CURVE.js'></script>
+
+<script src='GET_CIRCUMCIRCLE.js'></script>
+
 <script src='setup.js'></script>
 
 <script></script>
