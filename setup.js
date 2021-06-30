@@ -141,7 +141,8 @@ window.addEventListener('load', function(e) {
       vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
 
       // RESCALE
-      RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
+      // RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
+      RESCALE_BASED_ON_CENTROID(bx, vx);
 
       // REDRAW GRIDS
       bx.SHOWGRIDX(1);
@@ -287,8 +288,9 @@ window.addEventListener('load', function(e) {
       vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
 
       // RESCALE
-      RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
-
+      // RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
+      RESCALE_BASED_ON_CENTROID(bx, vx);
+      
       // REDRAW GRIDS
       bx.SHOWGRIDX(1);
       bx.SHOWGRIDY(1);
@@ -322,7 +324,7 @@ window.addEventListener('load', function(e) {
       // RESCALE
       // RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
       RESCALE_BASED_ON_CENTROID(by, vy);
-
+      
       // REDRAW GRIDS
       by.SHOWGRIDX(1);
       by.SHOWGRIDY(1);

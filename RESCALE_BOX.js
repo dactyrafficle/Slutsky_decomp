@@ -21,10 +21,6 @@ function RESCALE_BASED_ON_CIRCUMCIRCLE(box, VERTICES) {
 
 function RESCALE_BASED_ON_CENTROID(box, VERTICES) {
 
-  // NOW, FIND THE CIRCUMCENTER OF OBJ
-  let c = new CIRCUMCIRCLE(VERTICES.a, VERTICES.b, VERTICES.c);
-  //let r = ((c.x - c.a.x)**2 + (c.y - c.a.y)**2)**0.5;
-
   let cx = (VERTICES.a.x + VERTICES.b.x + VERTICES.c.x)/3;
   let cy = (VERTICES.a.y + VERTICES.b.y + VERTICES.c.y)/3;
   
@@ -40,6 +36,10 @@ function RESCALE_BASED_ON_CENTROID(box, VERTICES) {
   }
   if (rc > r) {
     r = rc;
+  }
+  
+  if (VERTICES.a.x == VERTICES.b.x && VERTICES.b.x == VERTICES.c.x &&  VERTICES.a.y == VERTICES.b.y && VERTICES.b.y == VERTICES.c.y) {
+    r = 0.1;
   }
 
  // RESCALE
