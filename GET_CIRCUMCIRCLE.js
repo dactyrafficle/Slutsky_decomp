@@ -20,7 +20,7 @@ function CIRCUMCIRCLE(a, b, c) {
 
     /* Check for coincident points */
     if(fabsy1y2 < EPSILON && fabsy2y3 < EPSILON)
-        throw new Error("Eek! Coincident points!");
+        return;  // ADDED 2021-06-30 : KEEP IT FROM BUGGING OUT IF ERROR
 
     if(fabsy1y2 < EPSILON) {
         m2  = -((cx - bx) / (cy - by));

@@ -1,16 +1,16 @@
 function RESCALE_BASED_ON_CIRCUMCIRCLE(box, VERTICES) {
 
-  // NOW, FIND THE CIRCUMCENTER OF OBJ
-  let c = new CIRCUMCIRCLE(VERTICES.a, VERTICES.b, VERTICES.c);
-  //let r = ((c.x - c.a.x)**2 + (c.y - c.a.y)**2)**0.5;
-
-  //console.log(c);
-  //console.log(r);
-
+ let c = new CIRCUMCIRCLE(VERTICES.a, VERTICES.b, VERTICES.c);
+  console.log(c);
  // RESCALE
+ 
+ 
+ 
+ // WHEN R IS ACTUALLY REALLY SMALL, I THINK I SHUD make z bigger, bc at r*3 the points are quite far 
   if (c.r) {
-   box.rangex(c.x-c.r*3, c.x+c.r*3);
-   box.rangey(c.y-c.r*3, c.y+c.r*3);
+   let z = 3;
+   box.rangex(c.x-c.r*z, c.x+c.r*z);
+   box.rangey(c.y-c.r*z, c.y+c.r*z);
   } 
   
 }
