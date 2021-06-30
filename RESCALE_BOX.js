@@ -4,6 +4,7 @@ function RESCALE_BASED_ON_CIRCUMCIRCLE(box, VERTICES) {
   console.log(c);
  // RESCALE
  
+ // IF YOU CANNOT GET 3 POINTS, TAKE THE AVERAGE OF THE 2 POINTS?
  
  
  // WHEN R IS ACTUALLY REALLY SMALL, I THINK I SHUD make z bigger, bc at r*3 the points are quite far 
@@ -11,7 +12,9 @@ function RESCALE_BASED_ON_CIRCUMCIRCLE(box, VERTICES) {
    let z = 3;
    box.rangex(c.x-c.r*z, c.x+c.r*z);
    box.rangey(c.y-c.r*z, c.y+c.r*z);
-  } 
+  } else {
+    RESCALE_BASED_ON_CENTROID(box, VERTICES);
+  }
   
 }
 
