@@ -1,7 +1,7 @@
 
 // this function is taken from https://gist.github.com/mutoo/5617691 on 2021-06-28
 
-function circumcircle2(a, b, c) {
+function CIRCUMCIRCLE(a, b, c) {
 
     this.a = a;
     this.b = b;
@@ -55,6 +55,7 @@ function circumcircle2(a, b, c) {
     dy = by - yc;
     this.x = xc;
     this.y = yc;
-    this.r = dx * dx + dy * dy;
+    this.r = (dx * dx + dy * dy)**0.5;  // ADDED 2021-06-29 : CODE WAS MISSING **0.5 
+    
 
 }

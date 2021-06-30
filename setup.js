@@ -1,6 +1,11 @@
 
-// DRAWINGS
+// THE BOXES
 let b, bx, by;
+
+// VERTICES DEFINING THE CIRCUMCIRCLES
+let v = {'a':{},'b':{},'c':{}};
+let vx = {'a':{},'b':{},'c':{}};
+let vy = {'a':{},'b':{},'c':{}}; 
 
 // PARAMETERS
 let PARAMETERS;
@@ -41,6 +46,8 @@ let INITIAL_HICKSIAN_LOG_DEMAND_CURVE;
 let FINAL_MARSHALLIAN_LOG_DEMAND_CURVE;
 let FINAL_HICKSIAN_LOG_DEMAND_CURVE;
 
+
+
 window.addEventListener('load', function(e) {
 
  console.log(e);
@@ -49,23 +56,15 @@ window.addEventListener('load', function(e) {
  b = new Box('x','y');
  document.getElementById('container-b').appendChild(b.returnCanvas());
  b.dimension(700, 700);
- b.rangex(-5, 60);
- b.rangey(-5, 60);
 
- 
  bx = new Box('lnpx','lnx');
  document.getElementById('container-bx').appendChild(bx.returnCanvas());
  bx.dimension(400, 400);
 
- 
  by = new Box('lnpy','lny');
  document.getElementById('container-by').appendChild(by.returnCanvas());
  by.dimension(400, 400);
- by.rangex(-2, 7);
- by.rangey(-2, 7);
- by.SHOWGRIDX(1);
- by.SHOWGRIDY(1);
- by.showAxes();
+
  
  PARAMETERS = UPDATE_PARAMETERS();
  
@@ -134,84 +133,71 @@ window.addEventListener('load', function(e) {
            b.SHOWVALUE({'x':FINAL_MARSHALLIAN_ALLOCATION.x,'y':FINAL_MARSHALLIAN_ALLOCATION.y}, '#d1e0e0', 4);
            b.SHOWVALUE(FINAL_HICKSIAN_ALLOCATION, '#adc2eb', 4);
  
- /* x demand curve */
- 
- 
-let objX = {};
-    objX.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
-    objX.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
-    objX.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
-    
-    // NOW, FIND THE CIRCUMCENTER OF OBJ
-    let c_x = new circumcircle2(objX.a, objX.b, objX.c);
-    let r_x = ((c_x.x - c_x.a.x)**2 + (c_x.y - c_x.a.y)**2)**0.5;
+      // LOG DEMAND OF X
 
-    // RESCALE
-    if (r_x) {
-     bx.rangex(c_x.x-r_x*3, c_x.x+r_x*3);
-     bx.rangey(c_x.y-r_x*3, c_x.y+r_x*3);
-    }
-    // REDRAW GRIDS
-    bx.SHOWGRIDX(1);
-    bx.SHOWGRIDY(1);
-    bx.showAxes();
+      // UPDATE VERTICES
+      vx.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+      vx.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
+      vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
 
-           
-           
-           INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
-           INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
-           FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
-           FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
-           
-           // THE MARSHALLIAN CURVES WILL BE THE SAME
-           
-           // INITIAL MARSHALLIAN LOG DEMAND CURVE
-           DRAW_ARR(bx, INITIAL_MARSHALLIAN_DEMAND_CURVE, '#fc07', 2);
-           
-           // INITIAL MARSHALLIAN LOG DEMAND CURVE
-           DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#fc07', 2);
-           
-           DRAW_ARR(bx, INITIAL_HICKSIAN_DEMAND_CURVE, '#f937', 2);
-           DRAW_ARR(bx, FINAL_HICKSIAN_DEMAND_CURVE, '#adc2eb', 2);
-           
-           
-           // INITIAL ALLOCATION (MARSHALLIAN = HICKSIAN)
-           bx.SHOWVALUE({'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)}, '#fc0', 4);
-           
-           // HICKSIAN RESPONSE TO PRICE CHANGES
-           bx.SHOWVALUE({'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)}, '#adc2eb', 4);
-           
-           // MARSHALLIAN RESPONSE TO PRICE CHANGES
-           bx.SHOWVALUE({'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)}, '#d1e0e0', 4);
-           
+      // RESCALE
+      RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
 
-           // now do everythings for y thahtdsoghodsjgbasdkgbkasbgk
-           // INITIAL MARSHALLIAN LOG DEMAND CURVE
- /* y demand curve */
+      // REDRAW GRIDS
+      bx.SHOWGRIDX(1);
+      bx.SHOWGRIDY(1);
+      bx.showAxes();
 
- // now do everythings for y thahtdsoghodsjgbasdkgbkasbgk
- // INITIAL MARSHALLIAN LOG DEMAND CURVE
- let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
- let FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget);
- DRAW_ARR(by, INITIAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffcc0099', 1);
- DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffcc0099', 1);
- let INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
- let FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
- DRAW_ARR(by, INITIAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 1);
- DRAW_ARR(by, FINAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 1);
+      // UPDATE DEMAND CURVES    
+      INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
+      INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
+      FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
+      FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
 
- // INITIAL ALLOCATION (MARSHALLIAN = HICKSIAN)
- by.SHOWVALUE({'x':Math.log(PARAMETERS.a.py,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)}, '#ffcc0099', 3);
- 
- //by.SHOWVALUE({'x':Math.log(PARAMETERS.a.py,Math.E),'y':Math.log(INITIAL_HICKSIAN_ALLOCATION.y,Math.E)}, '#ffcc0099', 3);
- 
- // HICKSIAN RESPONSE TO PRICE CHANGES
- by.SHOWVALUE({'x':Math.log(PARAMETERS.b.py,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)}, '#adc2eb', 3);
- 
- // MARSHALLIAN RESPONSE TO PRICE CHANGES
- by.SHOWVALUE({'x':Math.log(PARAMETERS.b.py,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)}, '#adc2eb', 3);
+      // REDRAW DEMAND CURVES 
+      DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#d1e0e0', 2);
+      DRAW_ARR(bx, INITIAL_MARSHALLIAN_DEMAND_CURVE, '#ffe066', 2);
+      DRAW_ARR(bx, INITIAL_HICKSIAN_DEMAND_CURVE, '#f937', 2);
+      DRAW_ARR(bx, FINAL_HICKSIAN_DEMAND_CURVE, '#adc2eb', 2);
+
+      // REDRAW ALLOCATIONS
+      bx.SHOWVALUE(vx.b, '#adc2eb', 4);
+      bx.SHOWVALUE(vx.c, '#d1e0e0', 4); 
+      bx.SHOWVALUE(vx.a, '#fc0', 4);
 
 
+      // LOG DEMAND OF Y
+
+      // UPDATE VERTICES
+      vy.a = {'x':Math.log(PARAMETERS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+      vy.b = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
+      vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+
+      // RESCALE
+      // RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
+      RESCALE_BASED_ON_CENTROID(by, vy);
+
+      // REDRAW GRIDS
+      by.SHOWGRIDX(1);
+      by.SHOWGRIDY(1);
+      by.showAxes();
+
+      // UPDATE DEMAND CURVES
+      let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
+      let FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget); 
+      let INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
+      let FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
+
+      // REDRAW DEMAND CURVES 
+      DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#d1e0e0', 2);
+      DRAW_ARR(by, INITIAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffe066', 2);
+      DRAW_ARR(by, INITIAL_HICKSIAN_DEMAND_CURVE_Y, '#f937', 2);
+      DRAW_ARR(by, FINAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 2);
+
+      // REDRAW ALLOCATIONS
+      by.SHOWVALUE(vy.b, '#adc2eb', 4);
+      by.SHOWVALUE(vy.c, '#d1e0e0', 4); 
+      by.SHOWVALUE(vy.a, '#fc0', 4);
 
   
  let myinputs = document.getElementsByClassName('myinputs');
@@ -291,117 +277,74 @@ let objX = {};
            b.SHOWVALUE({'x':FINAL_MARSHALLIAN_ALLOCATION.x,'y':FINAL_MARSHALLIAN_ALLOCATION.y}, '#d1e0e0', 4);
            b.SHOWVALUE(FINAL_HICKSIAN_ALLOCATION, '#adc2eb', 4);
 
-    let objX = {};
-    objX.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
-    objX.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
-    objX.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+
+
+      // LOG DEMAND OF X
+
+      // UPDATE VERTICES
+      vx.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+      vx.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
+      vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+
+      // RESCALE
+      RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
+
+      // REDRAW GRIDS
+      bx.SHOWGRIDX(1);
+      bx.SHOWGRIDY(1);
+      bx.showAxes();
+
+      // UPDATE DEMAND CURVES    
+      INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
+      INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
+      FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
+      FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
+
+      // REDRAW DEMAND CURVES 
+      DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#d1e0e0', 2);
+      DRAW_ARR(bx, INITIAL_MARSHALLIAN_DEMAND_CURVE, '#ffe066', 2);
+      DRAW_ARR(bx, INITIAL_HICKSIAN_DEMAND_CURVE, '#f937', 2);
+      DRAW_ARR(bx, FINAL_HICKSIAN_DEMAND_CURVE, '#adc2eb', 2);
+
+      // REDRAW ALLOCATIONS
+      bx.SHOWVALUE(vx.b, '#adc2eb', 4);
+      bx.SHOWVALUE(vx.c, '#d1e0e0', 4); 
+      bx.SHOWVALUE(vx.a, '#fc0', 4);
+
+
+      // LOG DEMAND OF Y
+
+      // UPDATE VERTICES
+      vy.a = {'x':Math.log(PARAMETERS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+      vy.b = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
+      vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+
+      // RESCALE
+      // RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
+      RESCALE_BASED_ON_CENTROID(by, vy);
+
+      // REDRAW GRIDS
+      by.SHOWGRIDX(1);
+      by.SHOWGRIDY(1);
+      by.showAxes();
+
+      // UPDATE DEMAND CURVES
+      let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
+      let FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget); 
+      let INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
+      let FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
+
+      // REDRAW DEMAND CURVES 
+      DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#d1e0e0', 2);
+      DRAW_ARR(by, INITIAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffe066', 2);
+      DRAW_ARR(by, INITIAL_HICKSIAN_DEMAND_CURVE_Y, '#f937', 2);
+      DRAW_ARR(by, FINAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 2);
+
+      // REDRAW ALLOCATIONS
+      by.SHOWVALUE(vy.b, '#adc2eb', 4);
+      by.SHOWVALUE(vy.c, '#d1e0e0', 4); 
+      by.SHOWVALUE(vy.a, '#fc0', 4);
     
-    // NOW, FIND THE CIRCUMCENTER OF OBJ
-    let c_x = new circumcircle2(objX.a, objX.b, objX.c);
-    let r_x = ((c_x.x - c_x.a.x)**2 + (c_x.y - c_x.a.y)**2)**0.5;
-
-    // RESCALE
-    if (r_x) {
-     bx.rangex(c_x.x-r_x*3, c_x.x+r_x*3);
-     bx.rangey(c_x.y-r_x*3, c_x.y+r_x*3);
-    }
-    // REDRAW GRIDS
-    bx.SHOWGRIDX(1);
-    bx.SHOWGRIDY(1);
-    bx.showAxes();
-
-           
-           
-           INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
-           INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
-           FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
-           FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
-           
-           // THE MARSHALLIAN CURVES WILL BE THE SAME
-           
-           // INITIAL MARSHALLIAN LOG DEMAND CURVE
-           DRAW_ARR(bx, INITIAL_MARSHALLIAN_DEMAND_CURVE, '#fc07', 2);
-           
-           // INITIAL MARSHALLIAN LOG DEMAND CURVE
-           DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#fc07', 2);
-           
-           DRAW_ARR(bx, INITIAL_HICKSIAN_DEMAND_CURVE, '#f937', 2);
-           DRAW_ARR(bx, FINAL_HICKSIAN_DEMAND_CURVE, '#adc2eb', 2);
-           
-           
-           // INITIAL ALLOCATION (MARSHALLIAN = HICKSIAN)
-           bx.SHOWVALUE({'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)}, '#fc0', 4);
-           
-           // HICKSIAN RESPONSE TO PRICE CHANGES
-           bx.SHOWVALUE({'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)}, '#adc2eb', 4);
-           
-           // MARSHALLIAN RESPONSE TO PRICE CHANGES
-           bx.SHOWVALUE({'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)}, '#d1e0e0', 4);
-           
-
-           // now do everythings for y thahtdsoghodsjgbasdkgbkasbgk
-           // INITIAL MARSHALLIAN LOG DEMAND CURVE
-         
-
-
-         
-    // RESCALE by TO MAKE ALL 3 DOTS LIE ON A CIRCLE
-    // CAPTURE CONDITION WHERE 2 POINTS ARE THE SAME, TO KEEP IT FROM BUGGING OUT
-    // CAPTURE CONDITION WHERE 2 POINTS ARE SO CLOSE, MAKING THE CIRCLE TOO BIG
-    // PUT SOME KIND OF TESTING CONDITION
-
-    let obj = {};
-    obj.a = {'x':Math.log(PARAMETERS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
-    obj.b = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
-    obj.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
-
-
-    // NOW, FIND THE CIRCUMCENTER OF OBJ
-    let c = new circumcircle2(obj.a, obj.b, obj.c);
-    let r = ((c.x - c.a.x)**2 + (c.y - c.a.y)**2)**0.5;
-
-    // RESCALE
-    if (r) {
-     by.rangex(c.x-r*3, c.x+r*3);
-     by.rangey(c.y-r*3, c.y+r*3);
-    }
-    
-    // angles of triangle can play a role too
-    // if you have big angles, then we need to shift closer to r (since r will be very large)
-    // if equal 60-60-60, we can move closer to 3r
-    
- 
-    // REDRAW GRIDS
-    by.SHOWGRIDX(1);
-    by.SHOWGRIDY(1);
-    by.showAxes();
-
-    // RECALC CURVES, THE RANGE HERE DEPENDS ON BOX RANGE
-    let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
-    let FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget); 
-    let INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
-    let FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
-
-    
-    // this is all about showing the circumcenter
-    /* 
-    by.SHOWVALUE(c, '#ffe670', 3);
-    let c_pixel = by.VAL2PIXEL(c);
-    by.ctx.beginPath();
-    by.ctx.arc(c_pixel.x, c_pixel.y, r*by.data.zoom.x, 0, 2 * Math.PI);
-    by.ctx.stroke();
-    */
- 
-    // REDRAW THE CURVES
-    DRAW_ARR(by, INITIAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffcc0099', 1);
-    DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffcc0099', 1);
-    DRAW_ARR(by, INITIAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 1);
-    DRAW_ARR(by, FINAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 1);
-
-    // REDRAW THE POINTS
-    by.SHOWVALUE({'x':Math.log(PARAMETERS.a.py,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)}, '#ffcc0099', 3);
-    by.SHOWVALUE({'x':Math.log(PARAMETERS.b.py,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)}, '#adc2eb', 3);
-    by.SHOWVALUE({'x':Math.log(PARAMETERS.b.py,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)}, '#adc2eb', 3);
      
    });
  }
