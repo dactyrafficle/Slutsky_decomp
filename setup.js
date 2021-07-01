@@ -141,13 +141,13 @@ window.addEventListener('load', function(e) {
       vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
 
       // RESCALE
-      // RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
-      RESCALE_BASED_ON_CENTROID(bx, vx);
+      RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
+      // RESCALE_BASED_ON_CENTROID(bx, vx);
 
       // REDRAW GRIDS
       bx.SHOWGRIDX(1);
       bx.SHOWGRIDY(1);
-      bx.showAxes();
+      
 
       // UPDATE DEMAND CURVES    
       INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
@@ -166,7 +166,9 @@ window.addEventListener('load', function(e) {
       bx.SHOWVALUE(vx.c, '#d1e0e0', 4); 
       bx.SHOWVALUE(vx.a, '#fc0', 4);
 
-
+      bx.SHOW_FLOATING_LOG_Y_AXIS();
+      bx.SHOW_FLOATING_LOG_X_AXIS();
+      
       // LOG DEMAND OF Y
 
       // UPDATE VERTICES
@@ -175,13 +177,13 @@ window.addEventListener('load', function(e) {
       vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
 
       // RESCALE
-      // RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
-      RESCALE_BASED_ON_CENTROID(by, vy);
+      RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
+      //RESCALE_BASED_ON_CENTROID(by, vy);
 
       // REDRAW GRIDS
       by.SHOWGRIDX(1);
       by.SHOWGRIDY(1);
-      by.showAxes();
+      
 
       // UPDATE DEMAND CURVES
       let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
@@ -200,7 +202,9 @@ window.addEventListener('load', function(e) {
       by.SHOWVALUE(vy.c, '#d1e0e0', 4); 
       by.SHOWVALUE(vy.a, '#fc0', 4);
 
-  
+      by.SHOW_FLOATING_LOG_Y_AXIS();
+      by.SHOW_FLOATING_LOG_X_AXIS();
+      
  let myinputs = document.getElementsByClassName('myinputs');
  for (let i = 0; i < myinputs.length; i++) {
    myinputs[i].addEventListener('input', function(e) {
@@ -294,7 +298,7 @@ window.addEventListener('load', function(e) {
       // REDRAW GRIDS
       bx.SHOWGRIDX(1);
       bx.SHOWGRIDY(1);
-      bx.showAxes();
+      
 
       // UPDATE DEMAND CURVES    
       INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
@@ -313,7 +317,8 @@ window.addEventListener('load', function(e) {
       bx.SHOWVALUE(vx.c, '#d1e0e0', 4); 
       bx.SHOWVALUE(vx.a, '#fc0', 4);
 
-
+      bx.SHOW_FLOATING_LOG_Y_AXIS();
+      bx.SHOW_FLOATING_LOG_X_AXIS();
       // LOG DEMAND OF Y
 
       // UPDATE VERTICES
@@ -328,7 +333,7 @@ window.addEventListener('load', function(e) {
       // REDRAW GRIDS
       by.SHOWGRIDX(1);
       by.SHOWGRIDY(1);
-      by.showAxes();
+      
 
       // UPDATE DEMAND CURVES
       let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
@@ -347,7 +352,8 @@ window.addEventListener('load', function(e) {
       by.SHOWVALUE(vy.c, '#d1e0e0', 4); 
       by.SHOWVALUE(vy.a, '#fc0', 4);
     
-     
+      by.SHOW_FLOATING_LOG_Y_AXIS();
+      by.SHOW_FLOATING_LOG_X_AXIS();
    });
  }
 
