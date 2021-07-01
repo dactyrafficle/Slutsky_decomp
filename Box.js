@@ -131,11 +131,39 @@ Box.prototype.SHOWGRIDY = function(dy) {
 
 };
 
+Box.prototype.SHOW_GRID_X = function(dx) {
+
+ if (!arguments[0]) {
+  dx = 1;
+ }
+ let zoom = this.data.zoom.x;
+
+ let alpha_1 = 1;
+ let alpha_10 = -1+(1/200)*zoom;
+ let color_string_1 = 'rgba(208, 208, 208,' + alpha_1 + ')';
+ let color_string_10 = 'rgba(208, 208, 208,' + alpha_10 + ')';
+ let x_start = Math.floor(this.data.range.x.min/dx)*dx;
+ 
+ let i = 0; // BC FLOATING PT NUMBERS MAKE TESTING x%dx TOUGH
+ for (let x = x_start; x < this.data.range.x.max; x += dx/10) {
+  if (i%10===0) {
+   let val0 = {'x':x,'y':this.data.range.y.min};
+   let val1 = {'x':x,'y':this.data.range.y.max};
+   this.CONNECTVALUES(val0, val1, color_string_1);
+  }
+
+  let val0 = {'x':x,'y':this.data.range.y.min};
+  let val1 = {'x':x,'y':this.data.range.y.max};
+  this.CONNECTVALUES(val0, val1, color_string_10);
+  i++;
+ }
+};
+
 Box.prototype.SHOW_FLOATING_LOG_Y_AXIS = function() {
 
  let n = 9;
  let sh = this.data.dimension.h/n;
- let sw = 30;
+ let sw = this.data.dimension.w/n;
  
  let n1 = 2;
  let n2 = n-n1;
@@ -170,7 +198,7 @@ Box.prototype.SHOW_FLOATING_LOG_Y_AXIS = function() {
 Box.prototype.SHOW_FLOATING_LOG_X_AXIS = function() {
 
  let n = 9;
- let sh = this.data.dimension.h - 30;
+ let sh = this.data.dimension.h - this.data.dimension.h/n;
  let sw = this.data.dimension.w/n;
  
  let n1 = 2;
@@ -193,7 +221,7 @@ Box.prototype.SHOW_FLOATING_LOG_X_AXIS = function() {
   this.ctx.fillStyle = '#333';
   this.ctx.textAlign = 'center';
   this.ctx.textBaseline = 'top';
-  this.ctx.fillText((Math.E**v0.y).toFixed(2), p0.x, p0.y+1*dsh);
+  this.ctx.fillText((Math.E**v0.x).toFixed(2), p0.x, p0.y+1*dsh);
   this.ctx.stroke();
   this.CONNECTVALUES(v0, v1, '#333', 0.5); 
  }
@@ -275,13 +303,13 @@ Box.prototype.SHOWVALUE = function(val, colorstring, rx) {
 
 }
 
-Box.prototype.CONNECTVALUES = function(val0, val1, colorstring, line_width) {
+Box.prototype.CONNECTVALUES = function(val0, val1, color_string, line_width) {
 
  let pixel0 = this.VAL2PIXEL(val0);
  let pixel1 = this.VAL2PIXEL(val1);
 
  this.ctx.lineWidth = (line_width || 1);
- this.ctx.strokeStyle = colorstring;
+ this.ctx.strokeStyle = color_string;
  this.ctx.beginPath();
  this.ctx.moveTo(pixel0.x, pixel0.y);
  this.ctx.lineTo(pixel1.x, pixel1.y);
@@ -310,3 +338,5 @@ Box.prototype.TEXT = function(str, val, color_string, font_size, font_family) {
  this.ctx.strokeStyle = (color_string || '#fff');
  this.ctx.fillText(str, pixel.x, pixel.y);
 }
+
+

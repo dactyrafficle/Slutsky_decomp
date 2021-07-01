@@ -181,7 +181,7 @@ window.addEventListener('load', function(e) {
       //RESCALE_BASED_ON_CENTROID(by, vy);
 
       // REDRAW GRIDS
-      by.SHOWGRIDX(1);
+      by.SHOW_GRID_X(1);
       by.SHOWGRIDY(1);
       
 
@@ -331,7 +331,7 @@ window.addEventListener('load', function(e) {
       // RESCALE_BASED_ON_CENTROID(by, vy);
       
       // REDRAW GRIDS
-      by.SHOWGRIDX(1);
+      by.SHOW_GRID_X(1);
       by.SHOWGRIDY(1);
       
 
