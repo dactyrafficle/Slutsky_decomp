@@ -169,6 +169,7 @@ Box.prototype.SHOW_GRID_X = function(dx) {
  let alpha_10 = -1+(1/200)*zoom;
  let color_string_1 = 'rgba(208, 208, 208,' + alpha_1 + ')';
  let color_string_10 = 'rgba(224, 224, 224,' + alpha_10 + ')';
+ 
  let x_start = Math.floor(this.data.range.x.min/dx)*dx;
  
  let i = 0; // BC FLOATING PT NUMBERS MAKE TESTING x%dx TOUGH
@@ -185,7 +186,34 @@ Box.prototype.SHOW_GRID_X = function(dx) {
   i++;
  }
 };
+Box.prototype.SHOW_GRID_Y = function(dy) {
 
+ if (!arguments[0]) {
+  dy = 1;
+ }
+ let zoom = this.data.zoom.x;
+
+ let alpha_1 = 1;
+ let alpha_10 = -1+(1/200)*zoom;
+ let color_string_1 = 'rgba(208, 208, 208,' + alpha_1 + ')';
+ let color_string_10 = 'rgba(224, 224, 224,' + alpha_10 + ')';
+ 
+ let y_start = Math.floor(this.data.range.y.min/dy)*dy;
+ 
+ let i = 0; // BC FLOATING PT NUMBERS MAKE TESTING y%dy TOUGH
+ for (let y = y_start; y < this.data.range.y.max; y += dy/10) {
+  if (i%10===0) {
+   let val0 = {'x':this.data.range.x.min,'y':y};
+   let val1 = {'x':this.data.range.x.max,'y':y};
+   this.CONNECTVALUES(val0, val1, color_string_1);
+  }
+
+   let val0 = {'x':this.data.range.x.min,'y':y};
+   let val1 = {'x':this.data.range.x.max,'y':y};
+  this.CONNECTVALUES(val0, val1, color_string_10);
+  i++;
+ }
+};
 Box.prototype.SHOW_FLOATING_LOG_Y_AXIS = function() {
 
  let n = 9;

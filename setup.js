@@ -125,13 +125,13 @@ window.addEventListener('load', function(e) {
     
     b.rangey(-5, YMAX*1.1);
     b.rangex(-5, XMAX*1.1);
-    
+
     // REDRAW GRIDS
-    b.SHOWGRIDX(10);
-    b.SHOWGRIDY(10);
+    b.SHOW_GRID_X(10);
+    b.SHOW_GRID_Y(10);
     b.showAxes();
-    
-     b.draw();
+
+    b.draw();
     
  
            INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
@@ -167,7 +167,7 @@ window.addEventListener('load', function(e) {
 
       // REDRAW GRIDS
       bx.SHOW_GRID_X(1);
-      bx.SHOWGRIDY(1);
+      bx.SHOW_GRID_Y(1);
       
 
       // UPDATE DEMAND CURVES    
@@ -203,7 +203,7 @@ window.addEventListener('load', function(e) {
 
       // REDRAW GRIDS
       by.SHOW_GRID_X(1);
-      by.SHOWGRIDY(1);
+      by.SHOW_GRID_Y(1);
       
 
       // UPDATE DEMAND CURVES
@@ -279,10 +279,9 @@ window.addEventListener('load', function(e) {
     b.rangex(-5, XMAX*1.1);
     
     // REDRAW GRIDS
-    b.SHOWGRIDX(10);
-    b.SHOWGRIDY(10);
+    b.SHOW_GRID_X(10);
+    b.SHOW_GRID_Y(10);
     b.showAxes();
-    
     b.draw();
     
            INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
@@ -323,7 +322,7 @@ window.addEventListener('load', function(e) {
       
       // REDRAW GRIDS
       bx.SHOW_GRID_X(1);
-      bx.SHOWGRIDY(1);
+      bx.SHOW_GRID_Y(1);
       
 
       // UPDATE DEMAND CURVES    
@@ -360,7 +359,7 @@ window.addEventListener('load', function(e) {
       
       // REDRAW GRIDS
       by.SHOW_GRID_X(1);
-      by.SHOWGRIDY(1);
+      by.SHOW_GRID_Y(1);
       
 
       // UPDATE DEMAND CURVES
