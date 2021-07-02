@@ -104,9 +104,14 @@ function RESCALE_BASED_ON_CENTROID(box, VERTICES) {
   if (VERTICES.a.x == VERTICES.b.x && VERTICES.b.x == VERTICES.c.x &&  VERTICES.a.y == VERTICES.b.y && VERTICES.b.y == VERTICES.c.y) {
     r = 0.1;
   }
+  
+  let z = r*3;
+  if (z < 0.5) {
+    z = 0.5;
+  }
 
  // RESCALE
- box.rangex(cx-r*3, cx+r*3);
- box.rangey(cy-r*3, cy+r*3);
+ box.rangex(cx-z, cx+z);
+ box.rangey(cy-z, cy+z);
   
 }

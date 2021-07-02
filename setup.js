@@ -2,6 +2,11 @@
 // THE BOXES
 let b, bx, by;
 
+let b_auto_rescale = false;
+let bx_auto_rescale = true;
+let by_auto_rescale = true;
+
+
 // VERTICES DEFINING THE CIRCUMCIRCLES
 let v = {'a':{},'b':{},'c':{}};
 let vx = {'a':{},'b':{},'c':{}};
@@ -46,8 +51,6 @@ let INITIAL_HICKSIAN_LOG_DEMAND_CURVE;
 let FINAL_MARSHALLIAN_LOG_DEMAND_CURVE;
 let FINAL_HICKSIAN_LOG_DEMAND_CURVE;
 
-
-
 window.addEventListener('load', function(e) {
 
  console.log(e);
@@ -56,14 +59,29 @@ window.addEventListener('load', function(e) {
  b = new Box('x','y');
  document.getElementById('container-b').appendChild(b.returnCanvas());
  b.dimension(700, 700);
+ // b.maps.push(['**',['/',23.05,['**',['get','x'],['get','b.alpha']]],['/',1,['-',1,['get','b.alpha']]]]);
+ b.maps.push(['**',['/',['*',['*',['get','b.budget'],['**',['/',['get','b.alpha'],['get','b.px']],['get','b.alpha']]],['**',['/',['-',1,['get','b.alpha']],['get','b.py']],['-',1,['get','b.alpha']]]],['**',['get','x'],['get','b.alpha']]],['/',1,['-',1,['get','b.alpha']]]]);
+
+ // utility
+ // ['*',['*',['get','b.budget'],['**',['/',['get','b.alpha'],['get','b.px']],['get','b.alpha']]],['**',['/',['-',1,['get','b.alpha']],['get','b.py']],['-',1,['get','b.alpha']]]]
+
+ // x piece
+ // ['**',['/',['get','b.alpha'],['get','b.px']],['get','b.alpha']]
+
+ // y piece 
+ // ['**',['/',['-',1,['get','b.alpha']],['get','b.py']],['-',1,['get','b.alpha']]]
+ 
+ 
+ 
+ 
 
  bx = new Box('lnpx','lnx');
  document.getElementById('container-bx').appendChild(bx.returnCanvas());
- bx.dimension(400, 400);
+ bx.dimension(430, 430);
 
  by = new Box('lnpy','lny');
  document.getElementById('container-by').appendChild(by.returnCanvas());
- by.dimension(400, 400);
+ by.dimension(430, 430);
 
  
  PARAMETERS = UPDATE_PARAMETERS();
@@ -112,6 +130,9 @@ window.addEventListener('load', function(e) {
     b.SHOWGRIDX(10);
     b.SHOWGRIDY(10);
     b.showAxes();
+    
+     b.draw();
+    
  
            INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
            FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMETERS.b.alpha);
@@ -145,7 +166,7 @@ window.addEventListener('load', function(e) {
       // RESCALE_BASED_ON_CENTROID(bx, vx);
 
       // REDRAW GRIDS
-      bx.SHOWGRIDX(1);
+      bx.SHOW_GRID_X(1);
       bx.SHOWGRIDY(1);
       
 
@@ -262,6 +283,8 @@ window.addEventListener('load', function(e) {
     b.SHOWGRIDY(10);
     b.showAxes();
     
+    b.draw();
+    
            INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
            FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMETERS.b.alpha);
            
@@ -292,11 +315,14 @@ window.addEventListener('load', function(e) {
       vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
 
       // RESCALE
-      RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
-      //RESCALE_BASED_ON_CENTROID(bx, vx);
+      if (bx_auto_rescale) {
+        // RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
+        RESCALE_BASED_ON_CENTROID(bx, vx);
+      }
+      
       
       // REDRAW GRIDS
-      bx.SHOWGRIDX(1);
+      bx.SHOW_GRID_X(1);
       bx.SHOWGRIDY(1);
       
 
@@ -327,8 +353,10 @@ window.addEventListener('load', function(e) {
       vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
 
       // RESCALE
-      RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
-      // RESCALE_BASED_ON_CENTROID(by, vy);
+      if (by_auto_rescale) {
+       // RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
+       RESCALE_BASED_ON_CENTROID(by, vy);
+      }
       
       // REDRAW GRIDS
       by.SHOW_GRID_X(1);

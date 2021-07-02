@@ -9,10 +9,11 @@
 
 <div class='section' style='padding: 1vh;'>
  <h4> @working</h4>
- <p> 2 to 3 will immediately be bad. 3 to 2 will be ok for a step, but will eventually be bad if it doesnt land on 3 </p>
+ <!-- <p> 2 to 3 will immediately be bad. 3 to 2 will be ok for a step, but will eventually be bad if it doesnt land on 3 </p>
+ <p> and 1 to 2 will be bad in the long run. </p> -->
  <p> do CES utility instead of cobdog. </p>
- <p> grid color, color based on scale </p>
- <p> button to turn on/off rescale </p>
+ <p> grid color, color based on scale : do for y</p>
+ <p> autoscale: off (default); each box should have a button to scale, on circumcenter (default);</p>
 </div>
 
 <div class='section'> 
@@ -106,8 +107,14 @@
   <div id='container-b'></div>
  </div>
  <div class='sub-section'>
-  <div id='container-bx' style='display: inline-block;'></div>
-  <div id='container-by' style='display: inline-block;'></div>
+  <div id='container-bx' style='position: relative; display: inline-block;'></div>
+  
+  <div class='canvas-container'>
+   <div id='container-by'></div>
+  </div>
+  <div>
+
+  </div>
  </div>
 </div>
 

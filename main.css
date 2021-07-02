@@ -13,7 +13,11 @@ html, body {
 
 canvas {
  border: 1px solid #ddd;
- margin: 1vh;
+ /* margin: 1vh; */
+}
+.canvas-container {
+ position: relative;
+ display: inline-block;
 }
 
 .mytables {
