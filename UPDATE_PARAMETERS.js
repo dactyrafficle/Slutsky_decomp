@@ -23,3 +23,14 @@ function UPDATE_PARAMETERS() {
   }
  }
 }
+
+function RESET_PARAMS() {
+  document.getElementById('input_alpha_initial').value = 0.5;
+  document.getElementById('input_budget_initial').value = 100;
+  document.getElementById('input_px_initial').value = 2;
+  document.getElementById('input_py_initial').value = 2;
+  document.getElementById('input_alpha_final').value = 0.5;
+  document.getElementById('input_budget_final').value = 100;
+  document.getElementById('input_px_final').value = 2;
+  document.getElementById('input_py_final').value = 2;
+}

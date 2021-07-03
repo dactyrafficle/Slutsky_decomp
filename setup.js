@@ -2,15 +2,17 @@
 // THE BOXES
 let b, bx, by;
 
-let b_auto_rescale = false;
-let bx_auto_rescale = true;
-let by_auto_rescale = true;
-
+let b_auto_rescale;
+let bx_auto_rescale;
+let by_auto_rescale;
 
 // VERTICES DEFINING THE CIRCUMCIRCLES
 let v = {'a':{},'b':{},'c':{}};
 let vx = {'a':{},'b':{},'c':{}};
 let vy = {'a':{},'b':{},'c':{}}; 
+
+let YMAX = 0;
+let XMAX = 0;
 
 // PARAMETERS
 let PARAMETERS;
@@ -54,6 +56,41 @@ let FINAL_HICKSIAN_LOG_DEMAND_CURVE;
 window.addEventListener('load', function(e) {
 
  console.log(e);
+ 
+  // SCALE
+  let btn_scale = document.getElementById('btn_scale').addEventListener('click', function(e) {
+    REDRAW_ISOQUANTS(true);
+    REDRAW_LOG_DEMAND_OF_X(true);
+    REDRAW_LOG_DEMAND_OF_Y(true);
+  });
+  
+  // RESET PARAMETERS AND REDRAW
+  let btn_reset_params = document.getElementById('btn_reset_params').addEventListener('click', function(e) {
+    RESET_PARAMS();
+    b.clear();
+    bx.clear();
+    by.clear();
+    UPDATE_GLOBAL_VARIABLES();
+    UPDATE_RESULTS_TABLE();
+    RECALC_ISOQUANT_SCALE();    
+    REDRAW_ISOQUANTS(true);
+    REDRAW_LOG_DEMAND_OF_X(true);
+    REDRAW_LOG_DEMAND_OF_Y(true);
+  });
+ 
+ // AUTOSCALE STATE
+  let input_autoscale = document.getElementById('input_autoscale').addEventListener('input', function(e) {
+  if (this.checked) {
+    b_auto_rescale = true;
+    bx_auto_rescale = true;
+    by_auto_rescale = true;
+  } else {
+    b_auto_rescale = false;
+    bx_auto_rescale = false;
+    by_auto_rescale = false;
+  }
+ });
+ 
 
  // SETUP
  b = new Box('x','y');
@@ -100,29 +137,15 @@ window.addEventListener('load', function(e) {
 
  //UPDATE_PARAMETER_TABLE(PARAMETERS);
  UPDATE_RESULTS_TABLE();
- 
-     // WHAT IS THE MAX Y-INTERCEPT?
-    let YMAX = 0;
-    if (PARAMETERS.a.budget/PARAMETERS.a.py > YMAX) {
-      YMAX = PARAMETERS.a.budget/PARAMETERS.a.py
-    }
-    if (PARAMETERS.b.budget/PARAMETERS.b.py > YMAX) {
-      YMAX = PARAMETERS.b.budget/PARAMETERS.b.py;
-    }
-    if (FINAL_EXPENDITURE/PARAMETERS.b.py > YMAX) {
-      YMAX = FINAL_EXPENDITURE/PARAMETERS.b.py;
-    }
-    let XMAX = 0;
-    if (PARAMETERS.a.budget/PARAMETERS.a.px > XMAX) {
-      XMAX = PARAMETERS.a.budget/PARAMETERS.a.px;
-    }
-    if (PARAMETERS.b.budget/PARAMETERS.b.px > XMAX) {
-      XMAX = PARAMETERS.b.budget/PARAMETERS.b.px;
-    }
-    if (FINAL_EXPENDITURE/PARAMETERS.b.px > XMAX) {
-      XMAX = FINAL_EXPENDITURE/PARAMETERS.b.px;
-    }
+
+
+
+
+
+
+  RECALC_ISOQUANT_SCALE();
     
+
     b.rangey(-5, YMAX*1.1);
     b.rangex(-5, XMAX*1.1);
 
@@ -226,163 +249,20 @@ window.addEventListener('load', function(e) {
       by.SHOW_FLOATING_LOG_Y_AXIS();
       by.SHOW_FLOATING_LOG_X_AXIS();
       
- let myinputs = document.getElementsByClassName('myinputs');
- for (let i = 0; i < myinputs.length; i++) {
-   myinputs[i].addEventListener('input', function(e) {
-     
+  let myinputs = document.getElementsByClassName('myinputs');
+  for (let i = 0; i < myinputs.length; i++) {
+    myinputs[i].addEventListener('input', function(e) {
       b.clear();
       bx.clear();
       by.clear();
-
-      
-           PARAMETERS = UPDATE_PARAMETERS();
-           
-           INITIAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.a);
-           FINAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.b);
-           
-           INITIAL_UTILITY = INITIAL_MARSHALLIAN_ALLOCATION.u;
-           FINAL_UTILITY = FINAL_MARSHALLIAN_ALLOCATION.u;
-           
-           INITIAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.a, INITIAL_UTILITY);
-           FINAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.b, INITIAL_UTILITY);
-
-           INITIAL_EXPENDITURE = INITIAL_HICKSIAN_ALLOCATION.e;
-           FINAL_EXPENDITURE = FINAL_HICKSIAN_ALLOCATION.e;
-
-           //UPDATE_PARAMETER_TABLE(PARAMETERS);
-           UPDATE_RESULTS_TABLE();
-
-
-    // WHAT IS THE MAX Y-INTERCEPT?
-    let YMAX = 0;
-    if (PARAMETERS.a.budget/PARAMETERS.a.py > YMAX) {
-      YMAX = PARAMETERS.a.budget/PARAMETERS.a.py
-    }
-    if (PARAMETERS.b.budget/PARAMETERS.b.py > YMAX) {
-      YMAX = PARAMETERS.b.budget/PARAMETERS.b.py;
-    }
-    if (FINAL_EXPENDITURE/PARAMETERS.b.py > YMAX) {
-      YMAX = FINAL_EXPENDITURE/PARAMETERS.b.py;
-    }
-    let XMAX = 0;
-    if (PARAMETERS.a.budget/PARAMETERS.a.px > XMAX) {
-      XMAX = PARAMETERS.a.budget/PARAMETERS.a.px;
-    }
-    if (PARAMETERS.b.budget/PARAMETERS.b.px > XMAX) {
-      XMAX = PARAMETERS.b.budget/PARAMETERS.b.px;
-    }
-    if (FINAL_EXPENDITURE/PARAMETERS.b.px > XMAX) {
-      XMAX = FINAL_EXPENDITURE/PARAMETERS.b.px;
-    }
-    
-    b.rangey(-5, YMAX*1.1);
-    b.rangex(-5, XMAX*1.1);
-    
-    // REDRAW GRIDS
-    b.SHOW_GRID_X(10);
-    b.SHOW_GRID_Y(10);
-    b.showAxes();
-    b.draw();
-    
-           INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
-           FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMETERS.b.alpha);
-           
-           INITIAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.a.budget/PARAMETERS.a.py},{'x':PARAMETERS.a.budget/PARAMETERS.a.px, 'y':0}]];
-           FINAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.b.budget/PARAMETERS.b.py},{'x':PARAMETERS.b.budget/PARAMETERS.b.px, 'y':0}]];
-           HICKSIAN_BUDGET_LINE = [[{'x':0, 'y':FINAL_EXPENDITURE/PARAMETERS.b.py},{'x':FINAL_EXPENDITURE/PARAMETERS.b.px, 'y':0}]];
-
-
-           DRAW_ARR(b, INITIAL_ISOQUANT, '#fc07', 2); 
-           DRAW_ARR(b, FINAL_ISOQUANT, '#d1e0e0', 2);
-           
-           DRAW_ARR(b, INITIAL_BUDGET_LINE, '#fc07', 2);
-           DRAW_ARR(b, FINAL_BUDGET_LINE, '#d1e0e0', 2);
-           DRAW_ARR(b, HICKSIAN_BUDGET_LINE, '#adc2eb', 2);
-
-           // SHOW VALUES
-           b.SHOWVALUE({'x':INITIAL_MARSHALLIAN_ALLOCATION.x,'y':INITIAL_MARSHALLIAN_ALLOCATION.y}, '#fc07', 4);
-           b.SHOWVALUE({'x':FINAL_MARSHALLIAN_ALLOCATION.x,'y':FINAL_MARSHALLIAN_ALLOCATION.y}, '#d1e0e0', 4);
-           b.SHOWVALUE(FINAL_HICKSIAN_ALLOCATION, '#adc2eb', 4);
-
-
-
-      // LOG DEMAND OF X
-
-      // UPDATE VERTICES
-      vx.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
-      vx.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
-      vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
-
-      // RESCALE
-      if (bx_auto_rescale) {
-        // RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
-        RESCALE_BASED_ON_CENTROID(bx, vx);
-      }
-      
-      
-      // REDRAW GRIDS
-      bx.SHOW_GRID_X(1);
-      bx.SHOW_GRID_Y(1);
-      
-
-      // UPDATE DEMAND CURVES    
-      INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
-      INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
-      FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
-      FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
-
-      // REDRAW DEMAND CURVES 
-      DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#d1e0e0', 2);
-      DRAW_ARR(bx, INITIAL_MARSHALLIAN_DEMAND_CURVE, '#ffe066', 2);
-      DRAW_ARR(bx, INITIAL_HICKSIAN_DEMAND_CURVE, '#f937', 2);
-      DRAW_ARR(bx, FINAL_HICKSIAN_DEMAND_CURVE, '#adc2eb', 2);
-
-      // REDRAW ALLOCATIONS
-      bx.SHOWVALUE(vx.b, '#adc2eb', 4);
-      bx.SHOWVALUE(vx.c, '#d1e0e0', 4); 
-      bx.SHOWVALUE(vx.a, '#fc0', 4);
-
-      bx.SHOW_FLOATING_LOG_Y_AXIS();
-      bx.SHOW_FLOATING_LOG_X_AXIS();
-      // LOG DEMAND OF Y
-
-      // UPDATE VERTICES
-      vy.a = {'x':Math.log(PARAMETERS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
-      vy.b = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
-      vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
-
-      // RESCALE
-      if (by_auto_rescale) {
-       // RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
-       RESCALE_BASED_ON_CENTROID(by, vy);
-      }
-      
-      // REDRAW GRIDS
-      by.SHOW_GRID_X(1);
-      by.SHOW_GRID_Y(1);
-      
-
-      // UPDATE DEMAND CURVES
-      let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
-      let FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget); 
-      let INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
-      let FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
-
-      // REDRAW DEMAND CURVES 
-      DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#d1e0e0', 2);
-      DRAW_ARR(by, INITIAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffe066', 2);
-      DRAW_ARR(by, INITIAL_HICKSIAN_DEMAND_CURVE_Y, '#f937', 2);
-      DRAW_ARR(by, FINAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 2);
-
-      // REDRAW ALLOCATIONS
-      by.SHOWVALUE(vy.b, '#adc2eb', 4);
-      by.SHOWVALUE(vy.c, '#d1e0e0', 4); 
-      by.SHOWVALUE(vy.a, '#fc0', 4);
-    
-      by.SHOW_FLOATING_LOG_Y_AXIS();
-      by.SHOW_FLOATING_LOG_X_AXIS();
-   });
- }
+      UPDATE_GLOBAL_VARIABLES();
+      UPDATE_RESULTS_TABLE();
+      RECALC_ISOQUANT_SCALE();    
+      REDRAW_ISOQUANTS(b_auto_rescale);
+      REDRAW_LOG_DEMAND_OF_X(bx_auto_rescale);
+      REDRAW_LOG_DEMAND_OF_Y(by_auto_rescale);
+    });
+  }
 
 
 
@@ -471,6 +351,130 @@ window.addEventListener('load', function(e) {
  }
 
 
+
+function UPDATE_GLOBAL_VARIABLES() {
+  PARAMETERS = UPDATE_PARAMETERS();
+
+  INITIAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.a);
+  FINAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.b);
+
+  INITIAL_UTILITY = INITIAL_MARSHALLIAN_ALLOCATION.u;
+  FINAL_UTILITY = FINAL_MARSHALLIAN_ALLOCATION.u;
+
+  INITIAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.a, INITIAL_UTILITY);
+  FINAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.b, INITIAL_UTILITY);
+
+  INITIAL_EXPENDITURE = INITIAL_HICKSIAN_ALLOCATION.e;
+  FINAL_EXPENDITURE = FINAL_HICKSIAN_ALLOCATION.e;
+
+  // UPDATE VERTICES OF LOG DEMAND OF X
+  vx.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+  vx.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
+  vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+
+  // UPDATE VERTICES OF LOG DEMAND OF Y
+  vy.a = {'x':Math.log(PARAMETERS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+  vy.b = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
+  vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+}
+
+function RECALC_ISOQUANT_SCALE() {
+    // WHAT IS THE MAX Y-INTERCEPT?
+    YMAX = 0;
+    if (PARAMETERS.a.budget/PARAMETERS.a.py > YMAX) {
+      YMAX = PARAMETERS.a.budget/PARAMETERS.a.py
+    }
+    if (PARAMETERS.b.budget/PARAMETERS.b.py > YMAX) {
+      YMAX = PARAMETERS.b.budget/PARAMETERS.b.py;
+    }
+    if (FINAL_EXPENDITURE/PARAMETERS.b.py > YMAX) {
+      YMAX = FINAL_EXPENDITURE/PARAMETERS.b.py;
+    }
+    XMAX = 0;
+    if (PARAMETERS.a.budget/PARAMETERS.a.px > XMAX) {
+      XMAX = PARAMETERS.a.budget/PARAMETERS.a.px;
+    }
+    if (PARAMETERS.b.budget/PARAMETERS.b.px > XMAX) {
+      XMAX = PARAMETERS.b.budget/PARAMETERS.b.px;
+    }
+    if (FINAL_EXPENDITURE/PARAMETERS.b.px > XMAX) {
+      XMAX = FINAL_EXPENDITURE/PARAMETERS.b.px;
+    }
+}
+
+
+
+
+
+
+function REDRAW_ISOQUANTS(b_auto_rescale_) {
+  b.clear();
+  if (b_auto_rescale_) {
+    b.rangey(-5, YMAX*1.1);
+    b.rangex(-5, XMAX*1.1);
+  }
+  b.SHOW_GRID_X(10);
+  b.SHOW_GRID_Y(10);
+  b.showAxes();
+  b.draw();
+  INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
+  FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMETERS.b.alpha);
+  INITIAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.a.budget/PARAMETERS.a.py},{'x':PARAMETERS.a.budget/PARAMETERS.a.px, 'y':0}]];
+  FINAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.b.budget/PARAMETERS.b.py},{'x':PARAMETERS.b.budget/PARAMETERS.b.px, 'y':0}]];
+  HICKSIAN_BUDGET_LINE = [[{'x':0, 'y':FINAL_EXPENDITURE/PARAMETERS.b.py},{'x':FINAL_EXPENDITURE/PARAMETERS.b.px, 'y':0}]];
+  DRAW_ARR(b, INITIAL_ISOQUANT, '#fc07', 2); 
+  DRAW_ARR(b, FINAL_ISOQUANT, '#d1e0e0', 2);
+  DRAW_ARR(b, INITIAL_BUDGET_LINE, '#fc07', 2);
+  DRAW_ARR(b, FINAL_BUDGET_LINE, '#d1e0e0', 2);
+  DRAW_ARR(b, HICKSIAN_BUDGET_LINE, '#adc2eb', 2);
+  b.SHOWVALUE({'x':INITIAL_MARSHALLIAN_ALLOCATION.x,'y':INITIAL_MARSHALLIAN_ALLOCATION.y}, '#fc07', 4);
+  b.SHOWVALUE({'x':FINAL_MARSHALLIAN_ALLOCATION.x,'y':FINAL_MARSHALLIAN_ALLOCATION.y}, '#d1e0e0', 4);
+  b.SHOWVALUE(FINAL_HICKSIAN_ALLOCATION, '#adc2eb', 4);
+}
+
+function REDRAW_LOG_DEMAND_OF_X(bx_auto_rescale_) {
+  bx.clear();
+  if (bx_auto_rescale_) {
+    RESCALE_BASED_ON_CENTROID(bx, vx);
+  }
+  bx.SHOW_GRID_X(1);
+  bx.SHOW_GRID_Y(1);  
+  INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
+  INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
+  FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
+  FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
+  DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#d1e0e0', 2);
+  DRAW_ARR(bx, INITIAL_MARSHALLIAN_DEMAND_CURVE, '#ffe066', 2);
+  DRAW_ARR(bx, INITIAL_HICKSIAN_DEMAND_CURVE, '#f937', 2);
+  DRAW_ARR(bx, FINAL_HICKSIAN_DEMAND_CURVE, '#adc2eb', 2);
+  bx.SHOWVALUE(vx.b, '#adc2eb', 4);
+  bx.SHOWVALUE(vx.c, '#d1e0e0', 4); 
+  bx.SHOWVALUE(vx.a, '#fc0', 4);
+  bx.SHOW_FLOATING_LOG_Y_AXIS();
+  bx.SHOW_FLOATING_LOG_X_AXIS();
+}
+
+function REDRAW_LOG_DEMAND_OF_Y(by_auto_rescale_) {
+  by.clear();
+  if (by_auto_rescale_) {
+    RESCALE_BASED_ON_CENTROID(by, vy);
+  }
+  by.SHOW_GRID_X(1);
+  by.SHOW_GRID_Y(1);
+  INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
+  FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget); 
+  INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
+  FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
+  DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#d1e0e0', 2);
+  DRAW_ARR(by, INITIAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffe066', 2);
+  DRAW_ARR(by, INITIAL_HICKSIAN_DEMAND_CURVE_Y, '#f937', 2);
+  DRAW_ARR(by, FINAL_HICKSIAN_DEMAND_CURVE_Y, '#adc2eb', 2);
+  by.SHOWVALUE(vy.b, '#adc2eb', 4);
+  by.SHOWVALUE(vy.c, '#d1e0e0', 4); 
+  by.SHOWVALUE(vy.a, '#fc0', 4);
+  by.SHOW_FLOATING_LOG_Y_AXIS();
+  by.SHOW_FLOATING_LOG_X_AXIS();
+}
 
 
 }); // CLOSING ONLOAD

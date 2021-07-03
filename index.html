@@ -19,13 +19,13 @@
  </tr>
  <tr>
   <td>alpha</td>
-  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.388' id='input_alpha_initial'></td>
-  <td><input class='myinputs' type='number' disabled step='0.001' min='0.01' max='0.99' value='0.388' id='input_alpha_final'></td>
+  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.5' id='input_alpha_initial'></td>
+  <td><input class='myinputs' type='number' disabled step='0.001' min='0.01' max='0.99' value='0.5' id='input_alpha_final'></td>
  </tr>
  <tr>
   <td>budget</td>
-  <td><input class='myinputs' type='number' step='1' min='1' max='200' value='108' id='input_budget_initial'></td>
-  <td><input class='myinputs' type='number'  step='1' min='1' max='200' value='108' id='input_budget_final'></td>
+  <td><input class='myinputs' type='number' step='1' min='1' max='200' value='100' id='input_budget_initial'></td>
+  <td><input class='myinputs' type='number'  step='1' min='1' max='200' value='100' id='input_budget_final'></td>
  </tr>
  <tr>
   <td>px</td>
@@ -34,12 +34,23 @@
  </tr>
  <tr>
   <td>py</td>
-  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2.7' id='input_py_initial'></td>
-  <td><input class='myinputs'  type='number' step='0.01' min='0.1' max='20' value='2.7' id='input_py_final'></td>
+  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2' id='input_py_initial'></td>
+  <td><input class='myinputs'  type='number' step='0.01' min='0.1' max='20' value='2' id='input_py_final'></td>
  </tr>
 </table>
 
+
 </div>
+
+ <div class='sub-section'>
+ 
+  <table class='mytables'>
+   <tr><td>params</td><td><button id='btn_reset_params'>reset!</button></td></tr>
+   <tr><td>scale</td><td><button id='btn_scale'>scale!</button></td></tr>
+   <tr><td>auto rescale</td><td style='text-align: center;'><input id='input_autoscale' type='checkbox'/></td></tr>
+  </table>
+  
+ </div>
 
  <div class='sub-section'>
  <table class='mytables' id=''>
@@ -146,9 +157,9 @@
 <div class='section' style='padding: 1vh;'>
  <h4> @working</h4>
  <!-- <p> 2 to 3 will immediately be bad. 3 to 2 will be ok for a step, but will eventually be bad if it doesnt land on 3 </p>
- <p> and 1 to 2 will be bad in the long run. </p> -->
+ <p> and 1 to 2 will be bad in the long run. </p>
  <p> do CES utility instead of cb? maybe next project </p>
- <p> autoscale: on (default); each box should have a button to flip on-off</p>
+ -->
  <p> sub effect : new price ratio, same preferences, same utility, new budget </p>
  <p> income effect : new price ratio, same preferences, new utility, same budget LESS sub effect</p>
  <p> or is that contingent on preferences not changing? </p>
