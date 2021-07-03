@@ -12,7 +12,7 @@ html, body {
 }
 
 canvas {
- border: 1px solid #ddd;
+ border: 1px solid #aaa;
  /* margin: 1vh; */
 }
 .canvas-container {
