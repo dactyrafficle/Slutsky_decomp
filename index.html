@@ -19,8 +19,13 @@
  </tr>
  <tr>
   <td>alpha</td>
-  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.5' id='input_alpha_initial'></td>
-  <td><input class='myinputs' type='number' disabled step='0.001' min='0.01' max='0.99' value='0.5' id='input_alpha_final'></td>
+  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.4' id='input_alpha_initial'></td>
+  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.4' id='input_alpha_final'></td>
+ </tr>
+ <tr>
+  <td>beta</td>
+  <td><input class='myinputs' disabled type='number' step='0.001' min='0.01' max='0.99' value='0.6' id='input_beta_initial'></td>
+  <td><input class='myinputs' disabled type='number' step='0.001' min='0.01' max='0.99' value='0.6' id='input_beta_final'></td>
  </tr>
  <tr>
   <td>budget</td>
@@ -56,14 +61,20 @@
  <table class='mytables' id=''>
   <tr>
    <td></td>
-   <td>INITIAL</td>
+   <td>
+    <div style='color: #fc0; background-color: #fff; font-size: 1.2em; font-weight: bold;'>INITIAL</div>
+    <div style='color: #8bb; background-color: #fff; font-size: 0.8em; font-weight: bold;'>MARSHALLIAN</div>
+   </td>
    <td colspan='2'>RESPONSE ALLOCATIONS</td>
   </tr>
   <tr>
    <td></td>
-   <td></td>
-   <td id=''>MARSHALLIAN</td>
-   <td id=''>HICKSIAN</td>
+    <td>
+    <div style='color: #f93; background-color: #fff; font-size: 1.2em; font-weight: bold;'>INITIAL</div>
+    <div style='color: #79d; background-color: #fff; font-size: 0.8em; font-weight: bold;'>HICKSIAN</div>
+    </td>
+   <td><p style='color: #8bb; background-color: #fff; font-size: 1.2em; font-weight: bold;'>MARSHALLIAN</p></td>
+   <td><p style='color: #79d; background-color: #fff; font-size: 1.2em; font-weight: bold;'>HICKSIAN</p></td>
   </tr>
 
   <tr>
@@ -102,23 +113,26 @@
 </div>
 
 
+<table>
+ <tr>
+ <td><p class='subtitle'>UTILITY</p></td>
+ <td><p class='subtitle'>DEMAND CURVES OF X</p></td>
+ <td><p class='subtitle'>DEMAND CURVES OF Y</p></td>
+ </tr>
+ 
+ <tr>
+ <td><div id='container-b'></div></td>
+ <td><div id='container-bxx'></div></td>
+ <td><div id='container-byy'></div></td>
+ </tr>
+ 
+ <tr><td></td><td><p class='subtitle'>LOG DEMAND CURVES OF X</p></td><td><p class='subtitle'>LOG DEMAND CURVES OF Y</p></td></tr>
+ 
+ <tr><td></td><td><div id='container-bx'></div></td><td><div id='container-by'></div></td></tr>
+
+</table>
 
 
-<div class='section'>
- <div class='sub-section'>
-  <div id='container-b'></div>
- </div>
- <div class='sub-section'>
-  <div id='container-bx' style='position: relative; display: inline-block;'></div>
-  
-  <div class='canvas-container'>
-   <div id='container-by'></div>
-  </div>
-  <div>
-
-  </div>
- </div>
-</div>
 
 <div class='section'>
  <div class='sub-section'>
@@ -135,6 +149,8 @@
  <p> In this case, the income and sub effects for good y in response to a change in px are equal and opposite. </p>
 
  <p><span class='math'>x_c^*=u_0 \big ( \dfrac{p_y}{p_x} \cdot \dfrac{\alpha}{1-\alpha} \big ) ^ {1-\alpha}</span></p>
+ <p> the initial marshallian and hicksian points are the same. but their response allocations are different. </p>
+ <p> therefore, while there are 4 points, 2 of them overlap, so we've got effectively 3 unique points </p>
 </div>
 </div>
 

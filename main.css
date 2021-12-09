@@ -20,6 +20,12 @@ canvas {
  display: inline-block;
 }
 
+.subtitle {
+  font-family: calibri;
+  text-align: center;
+  font-weight: bold;
+}
+
 .mytables {
  border-collapse: collapse;
  margin-bottom: 1vh;

@@ -1,6 +1,7 @@
 
 // THE BOXES
 let b, bx, by;
+let bxx, byy;
 
 let b_auto_rescale;
 let bx_auto_rescale;
@@ -14,8 +15,8 @@ let vy = {'a':{},'b':{},'c':{}};
 let YMAX = 0;
 let XMAX = 0;
 
-// PARAMETERS
-let PARAMETERS;
+// PARAMS
+let PARAMS;
 
 // MARSHALLIAN ALLOCATIONS
 let INITIAL_MARSHALLIAN_ALLOCATION;
@@ -53,10 +54,132 @@ let INITIAL_HICKSIAN_LOG_DEMAND_CURVE;
 let FINAL_MARSHALLIAN_LOG_DEMAND_CURVE;
 let FINAL_HICKSIAN_LOG_DEMAND_CURVE;
 
+
+function rescaleBoxes(obj) {
+
+  let scale = 1.25;
+
+  let x_max = -999;
+  if (obj.a.px > x_max) {x_max = obj.a.px};
+  if (obj.a.py > x_max) {x_max = obj.a.py};
+  if (obj.b.px > x_max) {x_max = obj.b.px};
+  if (obj.b.py > x_max) {x_max = obj.b.py};
+  if (4 > x_max) {x_max = 4};
+  
+  bxx.RANGE_X(0, x_max*scale);
+  byy.RANGE_X(0, x_max*scale);
+  
+  let alpha_0, alpha_1;
+  let beta_0, beta_1;
+  let budget_0, budget_1;
+  let px_0, px_1;
+  let py_0, py_1;
+
+  alpha_0 = obj.a.alpha;
+  alpha_1 = obj.b.alpha;
+  
+  beta_0 = obj.a.beta;
+  beta_1 = obj.b.beta;
+  
+  budget_0 = obj.a.budget;
+  budget_1 = obj.b.budget;
+
+  px_0 = obj.a.px;
+  px_1 = obj.b.px;
+  
+  py_0 = obj.a.py;
+  py_1 = obj.b.py;
+
+  // THE RESULTING ALLOCATIONS
+
+  let x_0 = alpha_0 * budget_0 / px_0;
+  let y_0 = beta_0 * budget_0 / py_0;
+  let u_0 = x_0**alpha_0*y_0**beta_0;
+
+  let x_1 = alpha_1 * budget_1 / px_1;
+  let y_1 = beta_1 * budget_1 / py_1;
+  let u_1 = x_1**alpha_1*y_1**beta_1;
+  
+  let xc_0 = (u_0*(py_0/px_0*alpha_0/beta_0)**beta_0);
+  let yc_0 = (u_0*(px_0/py_0*beta_0/alpha_0)**alpha_0);
+  
+  let xc_1 = (u_0*(py_1/px_1*alpha_1/beta_1)**beta_1);
+  let yc_1 = (u_0*(px_1/py_1*beta_1/alpha_1)**alpha_1);
+  
+  
+  // FIND THE HIGHEST VALUE OF x_1,
+  let y_max = -999;
+  if (x_1 > y_max) {y_max = x_1};
+  if (y_1 > y_max) {y_max = y_1};
+  if (x_0 > y_max) {y_max = x_0};
+  if (y_0 > y_max) {y_max = y_0};
+  if (xc_1 > y_max) {y_max = xc_1};
+  if (yc_1 > y_max) {y_max = yc_1};
+  if (15 > y_max) {y_max = 15};
+  
+  // console.log(y_max);
+  
+  bxx.RANGE_Y(0, y_max*scale);
+  byy.RANGE_Y(0, y_max*scale);
+}
+
+function initialize_bxx() {
+  bxx = new Box('px','x');
+  document.getElementById('container-bxx').appendChild(bxx.returnCanvas());
+  bxx.CANVAS_SIZE(window.innerWidth/4, window.innerWidth/4);
+}
+function initialize_byy() {
+  byy = new Box('py','y');
+  document.getElementById('container-byy').appendChild(byy.returnCanvas());
+  byy.CANVAS_SIZE(window.innerWidth/4, window.innerWidth/4);
+}
+function update_bxx(PARAMS) {
+  
+  bxx.CLEAR_CANVAS();
+
+  // BACKGROUND
+  bxx.SHOWGRIDX(2);
+  bxx.SHOWGRIDY(10);
+
+  // SHOW THE DEMAND CURVES
+  let drawing = bxx.DRAW_DEMAND_CURVE({
+    'alpha':[PARAMS.a.alpha,PARAMS.b.alpha],
+    'beta':[PARAMS.a.beta,PARAMS.b.beta],
+    'budget':[PARAMS.a.budget,PARAMS.b.budget],
+    'px':[PARAMS.a.px,PARAMS.b.px],
+    'py':[PARAMS.a.py,PARAMS.b.py],
+    'x':[1,1],
+    'y':[0,0],
+    'marshallian':true,
+    'hicksian':true,
+    'line_width':2
+  });
+};
+function update_byy(PARAMS) {
+  
+  byy.CLEAR_CANVAS();
+
+  // BACKGROUND
+  byy.SHOWGRIDX(2);
+  byy.SHOWGRIDY(10);
+
+  // SHOW THE DEMAND CURVES
+  let drawing = byy.DRAW_DEMAND_CURVE({
+    'alpha':[PARAMS.a.alpha,PARAMS.b.alpha],
+    'beta':[PARAMS.a.beta,PARAMS.b.beta],
+    'budget':[PARAMS.a.budget,PARAMS.b.budget],
+    'px':[PARAMS.a.px,PARAMS.b.px],
+    'py':[PARAMS.a.py,PARAMS.b.py],
+    'x':[0,0],
+    'y':[1,1],
+    'marshallian':true,
+    'hicksian':true,
+    'line_width':2
+  });
+};
+
 window.addEventListener('load', function(e) {
 
- console.log(e);
- 
   // SCALE
   let btn_scale = document.getElementById('btn_scale').addEventListener('click', function(e) {
     REDRAW_ISOQUANTS(true);
@@ -64,7 +187,7 @@ window.addEventListener('load', function(e) {
     REDRAW_LOG_DEMAND_OF_Y(true);
   });
   
-  // RESET PARAMETERS AND REDRAW
+  // RESET PARAMS AND REDRAW
   let btn_reset_params = document.getElementById('btn_reset_params').addEventListener('click', function(e) {
     RESET_PARAMS();
     b.clear();
@@ -110,6 +233,17 @@ window.addEventListener('load', function(e) {
       by.rangex(by.data.range.x.min, by.data.range.x.max);
       by.rangey(by.data.range.y.min, by.data.range.y.max);
       REDRAW_LOG_DEMAND_OF_Y(by_auto_rescale);
+      
+      bxx.CANVAS_SIZE(w, w);
+      bxx.RANGE_X(bxx.data.range.x.min, bxx.data.range.x.max);
+      bxx.RANGE_Y(bxx.data.range.y.min, bxx.data.range.y.max);
+      update_bxx(PARAMS);
+      
+      byy.CANVAS_SIZE(w, w);
+      byy.RANGE_X(byy.data.range.x.min, byy.data.range.x.max);
+      byy.RANGE_Y(byy.data.range.y.min, byy.data.range.y.max);
+      update_byy(PARAMS);
+  
    }
  });
 
@@ -118,6 +252,8 @@ window.addEventListener('load', function(e) {
   b = new Box('x','y');
   bx = new Box('lnpx','lnx');
   by = new Box('lnpy','lny');
+  bxx = new Box('px','x');
+  byy = new Box('py','y');
   
   let box_width = window.innerWidth/4;
   let min_box_width = 250;
@@ -126,45 +262,48 @@ window.addEventListener('load', function(e) {
     b.dimension(box_width, box_width);
     bx.dimension(box_width, box_width);
     by.dimension(box_width, box_width);
+    bxx.dimension(box_width, box_width);
+    byy.dimension(box_width, box_width);
   } else {
     b.dimension(min_box_width, min_box_width);
     bx.dimension(min_box_width, min_box_width);
-    by.dimension(min_box_width, min_box_width); 
+    by.dimension(min_box_width, min_box_width);
+    bxx.dimension(min_box_width, min_box_width);
+    byy.dimension(min_box_width, min_box_width);
   }
 
   document.getElementById('container-b').appendChild(b.returnCanvas());
   document.getElementById('container-bx').appendChild(bx.returnCanvas());
   document.getElementById('container-by').appendChild(by.returnCanvas());
+  document.getElementById('container-bxx').appendChild(bxx.returnCanvas());
+  document.getElementById('container-byy').appendChild(byy.returnCanvas());
+
+ 
+  PARAMS = UPDATE_PARAMS();
+ 
+  rescaleBoxes(PARAMS);
+
+  update_bxx(PARAMS);
+  update_byy(PARAMS);
+
+
 
  // b.maps.push(['**',['/',23.05,['**',['get','x'],['get','b.alpha']]],['/',1,['-',1,['get','b.alpha']]]]);
  b.maps.push(['**',['/',['*',['*',['get','b.budget'],['**',['/',['get','b.alpha'],['get','b.px']],['get','b.alpha']]],['**',['/',['-',1,['get','b.alpha']],['get','b.py']],['-',1,['get','b.alpha']]]],['**',['get','x'],['get','b.alpha']]],['/',1,['-',1,['get','b.alpha']]]]);
 
- // utility
- // ['*',['*',['get','b.budget'],['**',['/',['get','b.alpha'],['get','b.px']],['get','b.alpha']]],['**',['/',['-',1,['get','b.alpha']],['get','b.py']],['-',1,['get','b.alpha']]]]
-
- // x piece
- // ['**',['/',['get','b.alpha'],['get','b.px']],['get','b.alpha']]
-
- // y piece 
- // ['**',['/',['-',1,['get','b.alpha']],['get','b.py']],['-',1,['get','b.alpha']]]
-
-
  
- PARAMETERS = UPDATE_PARAMETERS();
- 
- INITIAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.a);
- FINAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.b);
+ INITIAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMS.a);
+ FINAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMS.b);
  
  INITIAL_UTILITY = INITIAL_MARSHALLIAN_ALLOCATION.u;
  FINAL_UTILITY = FINAL_MARSHALLIAN_ALLOCATION.u;
  
- INITIAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.a, INITIAL_UTILITY);
- FINAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.b, INITIAL_UTILITY);
+ INITIAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMS.a, INITIAL_UTILITY);
+ FINAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMS.b, INITIAL_UTILITY);
 
  INITIAL_EXPENDITURE = INITIAL_HICKSIAN_ALLOCATION.e;
  FINAL_EXPENDITURE = FINAL_HICKSIAN_ALLOCATION.e;
 
- //UPDATE_PARAMETER_TABLE(PARAMETERS);
  UPDATE_RESULTS_TABLE();
 
 
@@ -186,12 +325,12 @@ window.addEventListener('load', function(e) {
     b.draw();
     
  
-           INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
-           FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMETERS.b.alpha);
+           INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMS.a.alpha);
+           FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMS.b.alpha);
            
-           INITIAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.a.budget/PARAMETERS.a.py},{'x':PARAMETERS.a.budget/PARAMETERS.a.px, 'y':0}]];
-           FINAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.b.budget/PARAMETERS.b.py},{'x':PARAMETERS.b.budget/PARAMETERS.b.px, 'y':0}]];
-           HICKSIAN_BUDGET_LINE = [[{'x':0, 'y':FINAL_EXPENDITURE/PARAMETERS.b.py},{'x':FINAL_EXPENDITURE/PARAMETERS.b.px, 'y':0}]];
+           INITIAL_BUDGET_LINE = [[{'x':0, 'y':PARAMS.a.budget/PARAMS.a.py},{'x':PARAMS.a.budget/PARAMS.a.px, 'y':0}]];
+           FINAL_BUDGET_LINE = [[{'x':0, 'y':PARAMS.b.budget/PARAMS.b.py},{'x':PARAMS.b.budget/PARAMS.b.px, 'y':0}]];
+           HICKSIAN_BUDGET_LINE = [[{'x':0, 'y':FINAL_EXPENDITURE/PARAMS.b.py},{'x':FINAL_EXPENDITURE/PARAMS.b.px, 'y':0}]];
 
 
            DRAW_ARR(b, INITIAL_ISOQUANT, '#fc07', 2); 
@@ -209,9 +348,9 @@ window.addEventListener('load', function(e) {
       // LOG DEMAND OF X
 
       // UPDATE VERTICES
-      vx.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
-      vx.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
-      vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+      vx.a = {'x':Math.log(PARAMS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+      vx.b = {'x':Math.log(PARAMS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
+      vx.c = {'x':Math.log(PARAMS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
 
       // RESCALE
       RESCALE_BASED_ON_CIRCUMCIRCLE(bx, vx);
@@ -223,10 +362,10 @@ window.addEventListener('load', function(e) {
       
 
       // UPDATE DEMAND CURVES    
-      INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
-      INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
-      FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
-      FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
+      INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMS.a.alpha, PARAMS.a.budget);
+      INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMS.a.alpha, PARAMS.a.py, INITIAL_UTILITY);
+      FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMS.b.alpha, PARAMS.b.budget);
+      FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMS.b.alpha, PARAMS.b.py, INITIAL_UTILITY);
 
       // REDRAW DEMAND CURVES 
       DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#d1e0e0', 2);
@@ -245,9 +384,9 @@ window.addEventListener('load', function(e) {
       // LOG DEMAND OF Y
 
       // UPDATE VERTICES
-      vy.a = {'x':Math.log(PARAMETERS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
-      vy.b = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
-      vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+      vy.a = {'x':Math.log(PARAMS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+      vy.b = {'x':Math.log(PARAMS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
+      vy.c = {'x':Math.log(PARAMS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
 
       // RESCALE
       RESCALE_BASED_ON_CIRCUMCIRCLE(by, vy);
@@ -259,10 +398,10 @@ window.addEventListener('load', function(e) {
       
 
       // UPDATE DEMAND CURVES
-      let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
-      let FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget); 
-      let INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
-      let FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
+      let INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.a.alpha), PARAMS.a.budget);
+      let FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.b.alpha), PARAMS.b.budget); 
+      let INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.a.alpha), PARAMS.a.px, INITIAL_UTILITY);
+      let FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.b.alpha), PARAMS.b.px, INITIAL_UTILITY);
 
       // REDRAW DEMAND CURVES 
       DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#d1e0e0', 2);
@@ -290,6 +429,10 @@ window.addEventListener('load', function(e) {
       REDRAW_ISOQUANTS(b_auto_rescale);
       REDRAW_LOG_DEMAND_OF_X(bx_auto_rescale);
       REDRAW_LOG_DEMAND_OF_Y(by_auto_rescale);
+      
+      rescaleBoxes(PARAMS);
+      update_bxx(PARAMS);
+      update_byy(PARAMS);
     });
   }
 
@@ -382,52 +525,52 @@ window.addEventListener('load', function(e) {
 
 
 function UPDATE_GLOBAL_VARIABLES() {
-  PARAMETERS = UPDATE_PARAMETERS();
+  PARAMS = UPDATE_PARAMS();
 
-  INITIAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.a);
-  FINAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMETERS.b);
+  INITIAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMS.a);
+  FINAL_MARSHALLIAN_ALLOCATION = GET_MARSHALLIAN_ALLOCATION(PARAMS.b);
 
   INITIAL_UTILITY = INITIAL_MARSHALLIAN_ALLOCATION.u;
   FINAL_UTILITY = FINAL_MARSHALLIAN_ALLOCATION.u;
 
-  INITIAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.a, INITIAL_UTILITY);
-  FINAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMETERS.b, INITIAL_UTILITY);
+  INITIAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMS.a, INITIAL_UTILITY);
+  FINAL_HICKSIAN_ALLOCATION = GET_HICKSIAN_ALLOCATION(PARAMS.b, INITIAL_UTILITY);
 
   INITIAL_EXPENDITURE = INITIAL_HICKSIAN_ALLOCATION.e;
   FINAL_EXPENDITURE = FINAL_HICKSIAN_ALLOCATION.e;
 
   // UPDATE VERTICES OF LOG DEMAND OF X
-  vx.a = {'x':Math.log(PARAMETERS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
-  vx.b = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
-  vx.c = {'x':Math.log(PARAMETERS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+  vx.a = {'x':Math.log(PARAMS.a.px,Math.E),'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
+  vx.b = {'x':Math.log(PARAMS.b.px,Math.E),'y':Math.log(FINAL_HICKSIAN_ALLOCATION.x,Math.E)};
+  vx.c = {'x':Math.log(PARAMS.b.px,Math.E),'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.x,Math.E)};
 
   // UPDATE VERTICES OF LOG DEMAND OF Y
-  vy.a = {'x':Math.log(PARAMETERS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
-  vy.b = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
-  vy.c = {'x':Math.log(PARAMETERS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+  vy.a = {'x':Math.log(PARAMS.a.py,Math.E), 'y':Math.log(INITIAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
+  vy.b = {'x':Math.log(PARAMS.b.py,Math.E), 'y':Math.log(FINAL_HICKSIAN_ALLOCATION.y,Math.E)};
+  vy.c = {'x':Math.log(PARAMS.b.py,Math.E), 'y':Math.log(FINAL_MARSHALLIAN_ALLOCATION.y,Math.E)};
 }
 
 function RECALC_ISOQUANT_SCALE() {
     // WHAT IS THE MAX Y-INTERCEPT?
     YMAX = 0;
-    if (PARAMETERS.a.budget/PARAMETERS.a.py > YMAX) {
-      YMAX = PARAMETERS.a.budget/PARAMETERS.a.py
+    if (PARAMS.a.budget/PARAMS.a.py > YMAX) {
+      YMAX = PARAMS.a.budget/PARAMS.a.py
     }
-    if (PARAMETERS.b.budget/PARAMETERS.b.py > YMAX) {
-      YMAX = PARAMETERS.b.budget/PARAMETERS.b.py;
+    if (PARAMS.b.budget/PARAMS.b.py > YMAX) {
+      YMAX = PARAMS.b.budget/PARAMS.b.py;
     }
-    if (FINAL_EXPENDITURE/PARAMETERS.b.py > YMAX) {
-      YMAX = FINAL_EXPENDITURE/PARAMETERS.b.py;
+    if (FINAL_EXPENDITURE/PARAMS.b.py > YMAX) {
+      YMAX = FINAL_EXPENDITURE/PARAMS.b.py;
     }
     XMAX = 0;
-    if (PARAMETERS.a.budget/PARAMETERS.a.px > XMAX) {
-      XMAX = PARAMETERS.a.budget/PARAMETERS.a.px;
+    if (PARAMS.a.budget/PARAMS.a.px > XMAX) {
+      XMAX = PARAMS.a.budget/PARAMS.a.px;
     }
-    if (PARAMETERS.b.budget/PARAMETERS.b.px > XMAX) {
-      XMAX = PARAMETERS.b.budget/PARAMETERS.b.px;
+    if (PARAMS.b.budget/PARAMS.b.px > XMAX) {
+      XMAX = PARAMS.b.budget/PARAMS.b.px;
     }
-    if (FINAL_EXPENDITURE/PARAMETERS.b.px > XMAX) {
-      XMAX = FINAL_EXPENDITURE/PARAMETERS.b.px;
+    if (FINAL_EXPENDITURE/PARAMS.b.px > XMAX) {
+      XMAX = FINAL_EXPENDITURE/PARAMS.b.px;
     }
 }
 
@@ -446,11 +589,11 @@ function REDRAW_ISOQUANTS(b_auto_rescale_) {
   b.SHOW_GRID_Y(10);
   b.showAxes();
   b.draw();
-  INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMETERS.a.alpha);
-  FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMETERS.b.alpha);
-  INITIAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.a.budget/PARAMETERS.a.py},{'x':PARAMETERS.a.budget/PARAMETERS.a.px, 'y':0}]];
-  FINAL_BUDGET_LINE = [[{'x':0, 'y':PARAMETERS.b.budget/PARAMETERS.b.py},{'x':PARAMETERS.b.budget/PARAMETERS.b.px, 'y':0}]];
-  HICKSIAN_BUDGET_LINE = [[{'x':0, 'y':FINAL_EXPENDITURE/PARAMETERS.b.py},{'x':FINAL_EXPENDITURE/PARAMETERS.b.px, 'y':0}]];
+  INITIAL_ISOQUANT = GET_ISOQUANT(b, INITIAL_UTILITY, PARAMS.a.alpha);
+  FINAL_ISOQUANT = GET_ISOQUANT(b, FINAL_UTILITY, PARAMS.b.alpha);
+  INITIAL_BUDGET_LINE = [[{'x':0, 'y':PARAMS.a.budget/PARAMS.a.py},{'x':PARAMS.a.budget/PARAMS.a.px, 'y':0}]];
+  FINAL_BUDGET_LINE = [[{'x':0, 'y':PARAMS.b.budget/PARAMS.b.py},{'x':PARAMS.b.budget/PARAMS.b.px, 'y':0}]];
+  HICKSIAN_BUDGET_LINE = [[{'x':0, 'y':FINAL_EXPENDITURE/PARAMS.b.py},{'x':FINAL_EXPENDITURE/PARAMS.b.px, 'y':0}]];
   DRAW_ARR(b, INITIAL_ISOQUANT, '#fc07', 2); 
   DRAW_ARR(b, FINAL_ISOQUANT, '#d1e0e0', 2);
   DRAW_ARR(b, INITIAL_BUDGET_LINE, '#fc07', 2);
@@ -468,10 +611,10 @@ function REDRAW_LOG_DEMAND_OF_X(bx_auto_rescale_) {
   }
   bx.SHOW_GRID_X(1);
   bx.SHOW_GRID_Y(1);  
-  INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.budget);
-  INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.a.alpha, PARAMETERS.a.py, INITIAL_UTILITY);
-  FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.budget);
-  FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMETERS.b.alpha, PARAMETERS.b.py, INITIAL_UTILITY);
+  INITIAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMS.a.alpha, PARAMS.a.budget);
+  INITIAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMS.a.alpha, PARAMS.a.py, INITIAL_UTILITY);
+  FINAL_MARSHALLIAN_DEMAND_CURVE = GET_MARSHALLIAN_LOG_DEMAND_CURVE(bx, PARAMS.b.alpha, PARAMS.b.budget);
+  FINAL_HICKSIAN_DEMAND_CURVE = GET_HICKSIAN_LOG_DEMAND_CURVE(bx, PARAMS.b.alpha, PARAMS.b.py, INITIAL_UTILITY);
   DRAW_ARR(bx, FINAL_MARSHALLIAN_DEMAND_CURVE, '#d1e0e0', 2);
   DRAW_ARR(bx, INITIAL_MARSHALLIAN_DEMAND_CURVE, '#ffe066', 2);
   DRAW_ARR(bx, INITIAL_HICKSIAN_DEMAND_CURVE, '#f937', 2);
@@ -490,10 +633,10 @@ function REDRAW_LOG_DEMAND_OF_Y(by_auto_rescale_) {
   }
   by.SHOW_GRID_X(1);
   by.SHOW_GRID_Y(1);
-  INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.budget);
-  FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.budget); 
-  INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.a.alpha), PARAMETERS.a.px, INITIAL_UTILITY);
-  FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMETERS.b.alpha), PARAMETERS.b.px, INITIAL_UTILITY);
+  INITIAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.a.alpha), PARAMS.a.budget);
+  FINAL_MARSHALLIAN_DEMAND_CURVE_Y = GET_MARSHALLIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.b.alpha), PARAMS.b.budget); 
+  INITIAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.a.alpha), PARAMS.a.px, INITIAL_UTILITY);
+  FINAL_HICKSIAN_DEMAND_CURVE_Y = GET_HICKSIAN_LOG_DEMAND_CURVE(by, (1-PARAMS.b.alpha), PARAMS.b.px, INITIAL_UTILITY);
   DRAW_ARR(by, FINAL_MARSHALLIAN_DEMAND_CURVE_Y, '#d1e0e0', 2);
   DRAW_ARR(by, INITIAL_MARSHALLIAN_DEMAND_CURVE_Y, '#ffe066', 2);
   DRAW_ARR(by, INITIAL_HICKSIAN_DEMAND_CURVE_Y, '#f937', 2);
