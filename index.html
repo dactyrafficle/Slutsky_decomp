@@ -35,7 +35,7 @@
  <tr>
   <td>px</td>
   <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2' id='input_px_initial'></td>
-  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2' id='input_px_final'></td>
+  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='3' id='input_px_final'></td>
  </tr>
  <tr>
   <td>py</td>
@@ -49,71 +49,80 @@
 
  <div class='sub-section'>
  
-  <table class='mytables'>
-   <tr><td>params</td><td><button id='btn_reset_params'>reset!</button></td></tr>
-   <tr><td>scale</td><td><button id='btn_scale'>scale!</button></td></tr>
-   <tr><td>auto rescale</td><td style='text-align: center;'><input id='input_autoscale' type='checkbox'/></td></tr>
-  </table>
-  
- </div>
-
- <div class='sub-section'>
  <table class='mytables' id=''>
   <tr>
-   <td></td>
+    <td></td>
+    <td></td>
    <td>
     <div style='color: #fc0; background-color: #fff; font-size: 1.2em; font-weight: bold;'>INITIAL</div>
     <div style='color: #8bb; background-color: #fff; font-size: 0.8em; font-weight: bold;'>MARSHALLIAN</div>
    </td>
    <td colspan='2'>RESPONSE ALLOCATIONS</td>
+   <td colspan='3'>MINI ANALYSIS</td>
   </tr>
   <tr>
-   <td></td>
+    <td></td>
+    <td></td>
     <td>
     <div style='color: #f93; background-color: #fff; font-size: 1.2em; font-weight: bold;'>INITIAL</div>
     <div style='color: #79d; background-color: #fff; font-size: 0.8em; font-weight: bold;'>HICKSIAN</div>
     </td>
-   <td><p style='color: #8bb; background-color: #fff; font-size: 1.2em; font-weight: bold;'>MARSHALLIAN</p></td>
-   <td><p style='color: #79d; background-color: #fff; font-size: 1.2em; font-weight: bold;'>HICKSIAN</p></td>
+    <td colspan=2>
+      <div style='color: #8bb; background-color: #fff; font-size: 1.2em; font-weight: bold;'>MARSHALLIAN</div>
+      <div style='color: #79d; background-color: #fff; font-size: 1.2em; font-weight: bold; text-align: right;'>HICKSIAN</div>
+    </td>
+    <td>SUB</td>
+    <td>INCOME</td>
+    <td>TOTAL</td>
   </tr>
 
   <tr>
-   <td>EXPENDITURE</td>
-   <td><span id='expenditure-initial'></span></td>
-   <td><span id='expenditure-marshallian'></span></td>
-   <td><span id='expenditure-hicksian'></span></td>
+    <td rowspan=2>ALLOCATION</td>
+    <td><span>x</span></td>
+    <td><span id='initial_allocation_x'></span></td>
+    <td><span id='marshallian_response_x'></span></td>
+    <td><span id='hicksian_response_x'></span></td>
+    <td><div id='sub_x'></div></td>
+    <td><div id='income_x'></div></td>
+    <td><div id='total_x'></div></td>
+  </tr>
+  
+  <tr>
+    <td><span>y</span></td>
+    <td><span id='initial_allocation_y'></span></td>
+    <td><span id='marshallian_response_y'></span></td>
+    <td><span id='hicksian_response_y'></span></td>
+    <td><div id='sub_y'></div></td>
+    <td><div id='income_y'></div></td>
+    <td><div id='total_y'></div></td>
+  </tr>
+  
+  <tr>
+    <td>UTILITY</td>
+    <td></td>
+    <td><span id='initial_utility'></span></td>
+    <td><span id='marshallian_utility'></span></td>
+    <td><span id='hicksian_utility'></span></td>
+    <td colspan=3 rowspan=2></td>
+  </tr>
+  <tr>
+    <td>EXPENDITURE</td>
+    <td></td>
+    <td><span id='initial_expenditure'></span></td>
+    <td><span id='marshallian_expenditure'></span></td>
+    <td><span id='hicksian_expenditure'></span></td>
   </tr>
 
-  <tr>
-   <td>ALLOCATION</td>
-   <td><span id='allocation-initial'></span></td>
-   <td><span id='allocation-marshallian'></span></td>
-   <td><span id='allocation-hicksian'></span></td>
-  </tr>
-  <tr>
-   <td>UTILITY</td>
-   <td><span id='utility-initial'></span></td>
-   <td><span id='utility-marshallian'></span></td>
-   <td><span id='utility-hicksian'></span></td>
-  </tr>
  </table>
  
  </div>
  
-  <div class='sub-section'>
-   <table class='mytables'>
-    <tr><td></td><td></td><td colspan='4' style='text-align: center;'>MARSHALLIAN</td></tr>
-    <tr><td></td><td></td><td colspan='2' style='text-align: center;'>HICKSIAN</td><td colspan='2'></td></tr>
-    <tr><td>GOOD</td><td>INITIAL</td><td>SUB</td><td>ALLOC</td><td>INCOME</td><td>ALLOC</td></tr>
-    <tr><td>x</td><td><span id='x-initial'></span></td><td id='sub-effect-x'></td><td><span id='hicksian-x'></span></td><td id='income-effect-x'></td><td id='x-final'></td></tr>
-    <tr><td>y</td><td><span id='y-initial'></span></td><td id='sub-effect-y'></td><td><span id='hicksian-y'></span></td><td id='income-effect-y'></td><td id='y-final'></td></tr>
-   </table>
-  </div>
  
 </div>
 
 
 <table>
+
  <tr>
  <td><p class='subtitle'>UTILITY</p></td>
  <td><p class='subtitle'>DEMAND CURVES OF X</p></td>
@@ -126,9 +135,17 @@
  <td><div id='container-byy'></div></td>
  </tr>
  
- <tr><td></td><td><p class='subtitle'>LOG DEMAND CURVES OF X</p></td><td><p class='subtitle'>LOG DEMAND CURVES OF Y</p></td></tr>
+ <tr>
+ <td></td>
+ <td><p class='subtitle'>LOG DEMAND CURVES OF X</p></td>
+ <td><p class='subtitle'>LOG DEMAND CURVES OF Y</p></td>
+ </tr>
  
- <tr><td></td><td><div id='container-bx'></div></td><td><div id='container-by'></div></td></tr>
+ <tr>
+ <td></td>
+ <td><div id='container-bx'></div></td>
+ <td><div id='container-by'></div></td>
+ </tr>
 
 </table>
 
@@ -146,6 +163,19 @@
   <li> shifting of y_c(py)
  </ul>
  
+ <p> Process : </p>
+ <ul>
+  <li><p> beta = 1 - alpha </p>
+  <li><p> start with the marshallian demand curves. that gets you utility </p>
+  <li><p> the indifference curves functions have the form y = (U/x**alpha)**(1/beta) </p>
+  <li><p> using utility, we get the hicksian (compensated) demand curves with : </p>
+    <ul>
+     <li><p>x_c = u_0 (py/px alpha/beta))**beta </p>
+     <li><p>y_c = u_0 (px/py beta/alpha))**alpha </p>
+    </ul>
+  <li><p> x_c and y_c let you get u_1, which gives you the IDC for the hicksian point </p>
+ </ul>
+ 
  <p> In this case, the income and sub effects for good y in response to a change in px are equal and opposite. </p>
 
  <p><span class='math'>x_c^*=u_0 \big ( \dfrac{p_y}{p_x} \cdot \dfrac{\alpha}{1-\alpha} \big ) ^ {1-\alpha}</span></p>
@@ -154,18 +184,9 @@
 </div>
 </div>
 
-<!--  <script src='https://cdn.jsdelivr.net/gh/dactyrafficle/Box/Box.js'></script>  -->
+
 <script src='Box.js'></script>
-
-<script src='GET_MARSHALLIAN_ALLOCATION.js'></script>
-<script src='GET_HICKSIAN_ALLOCATION.js'></script>
 <script src='UPDATE_PARAMETERS.js'></script>
-<script src='UPDATE_TABLES.js'></script>
-<script src='GET_MARSHALLIAN_LOG_DEMAND_CURVE.js'></script>
-<script src='GET_HICKSIAN_LOG_DEMAND_CURVE.js'></script>
-
-<script src='GET_CIRCUMCIRCLE.js'></script>
-<script src='RESCALE_BOX.js'></script>
 <script src='setup.js'></script>
 
 <script></script>

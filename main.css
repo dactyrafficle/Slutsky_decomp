@@ -34,3 +34,8 @@ canvas {
  border: 1px solid #ddd;
  padding: 0.5vh;
 }
+
+input.myinputs {
+  width: 100%;
+  padding: 3px;
+}
