@@ -269,7 +269,6 @@ function update_b(PARAMS, SOLUTIONS) {
 function update_bx(PARAMS) {
   
   bx.CLEAR_CANVAS();
-
   bx.SHOW_GRID_Y({'dy':0.5});
   bx.SHOW_GRID_Y({'dy':1,'color_string':'#ccc'});
   bx.SHOW_GRID_X({'dx':0.5,'color_string':'#eee'});
@@ -294,8 +293,10 @@ function update_bx(PARAMS) {
 function update_by(PARAMS) {
   
   by.CLEAR_CANVAS();
-  by.SHOW_GRID_X({'dx':0.5});
   by.SHOW_GRID_Y({'dy':0.5});
+  by.SHOW_GRID_Y({'dy':1,'color_string':'#ccc'});
+  by.SHOW_GRID_X({'dx':0.5,'color_string':'#eee'});
+  by.SHOW_GRID_X({'dx':1,'color_string':'#ccc'});
 
   let drawing = by.DRAW_DEMAND_CURVE({
     'alpha':[PARAMS.a.alpha,PARAMS.b.alpha],
