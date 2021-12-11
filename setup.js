@@ -7,6 +7,26 @@ let PARAMS;
 let SOLUTIONS;
 let my_inputs = document.getElementsByClassName('myinputs');
 
+let RESIZE = true;
+
+function RESIZE_CANVASES(RESIZE) {
+  
+  let w = 289;
+  if (RESIZE) {
+    w = window.innerWidth/4;
+    if (w < 250) {
+      w = 250;
+    }
+  }
+
+  b.CANVAS_SIZE(w, w);
+  bx.CANVAS_SIZE(w, w);
+  by.CANVAS_SIZE(w, w);
+  bxx.CANVAS_SIZE(w, w);
+  byy.CANVAS_SIZE(w, w);
+}
+
+
 window.onload = function() {
   
   my_inputs = document.getElementsByClassName('myinputs');
@@ -26,15 +46,7 @@ window.onload = function() {
   document.getElementById('container-byy').appendChild(byy.returnCanvas());
 
   // SIZE THE CANVASES
-  let w = window.innerWidth/4;
-  if (w < 250) {
-    w = 250;
-  }
-  b.CANVAS_SIZE(w, w);
-  bx.CANVAS_SIZE(w, w);
-  by.CANVAS_SIZE(w, w);
-  bxx.CANVAS_SIZE(w, w);
-  byy.CANVAS_SIZE(w, w);
+  RESIZE_CANVASES(RESIZE);
   
   // PROCESS
   PARAMS = UPDATE_PARAMS();
@@ -52,17 +64,9 @@ window.onload = function() {
  
 
   window.addEventListener('resize', function(e) {
-    
+
     // RESIZE THE CANVASES
-    let w = window.innerWidth/4;
-    if (w < 250) {
-      w = 250;
-    }
-    b.CANVAS_SIZE(w, w);
-    bx.CANVAS_SIZE(w, w);
-    by.CANVAS_SIZE(w, w);
-    bxx.CANVAS_SIZE(w, w);
-    byy.CANVAS_SIZE(w, w);
+    RESIZE_CANVASES(RESIZE);
     
     update_b(PARAMS, SOLUTIONS);
     update_bx(PARAMS);
