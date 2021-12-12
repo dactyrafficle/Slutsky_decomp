@@ -19,28 +19,28 @@
  </tr>
  <tr>
   <td>alpha</td>
-  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.4' id='input_alpha_initial'></td>
-  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.4' id='input_alpha_final'></td>
+  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.4' id='input_alpha_INITIAL'></td>
+  <td><input class='myinputs' type='number' step='0.001' min='0.01' max='0.99' value='0.4' id='input_alpha_FINAL'></td>
  </tr>
  <tr>
   <td>beta</td>
-  <td><input class='myinputs' disabled type='number' step='0.001' min='0.01' max='0.99' value='0.6' id='input_beta_initial'></td>
-  <td><input class='myinputs' disabled type='number' step='0.001' min='0.01' max='0.99' value='0.6' id='input_beta_final'></td>
+  <td><input class='myinputs' disabled type='number' step='0.001' min='0.01' max='0.99' value='0.6' id='input_beta_INITIAL'></td>
+  <td><input class='myinputs' disabled type='number' step='0.001' min='0.01' max='0.99' value='0.6' id='input_beta_FINAL'></td>
  </tr>
  <tr>
   <td>budget</td>
-  <td><input class='myinputs' type='number' step='1' min='1' max='200' value='100' id='input_budget_initial'></td>
-  <td><input class='myinputs' type='number'  step='1' min='1' max='200' value='100' id='input_budget_final'></td>
+  <td><input class='myinputs' type='number' step='1' min='1' max='200' value='100' id='input_budget_INITIAL'></td>
+  <td><input class='myinputs' type='number'  step='1' min='1' max='200' value='100' id='input_budget_FINAL'></td>
  </tr>
  <tr>
   <td>px</td>
-  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2' id='input_px_initial'></td>
-  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='3' id='input_px_final'></td>
+  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2' id='input_px_INITIAL'></td>
+  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='3' id='input_px_FINAL'></td>
  </tr>
  <tr>
   <td>py</td>
-  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2' id='input_py_initial'></td>
-  <td><input class='myinputs'  type='number' step='0.01' min='0.1' max='20' value='2' id='input_py_final'></td>
+  <td><input class='myinputs' type='number' step='0.01' min='0.1' max='20' value='2' id='input_py_INITIAL'></td>
+  <td><input class='myinputs'  type='number' step='0.01' min='0.1' max='20' value='2' id='input_py_FINAL'></td>
  </tr>
 </table>
 
@@ -62,9 +62,7 @@
     <td></td>
     <td>
     <div style='color: #fc0; background-color: #fff; font-size: 1.2em; font-weight: bold;'>MARSHALLIAN</div>
-    <!-- <div style='color: #8bb; background-color: #fff; font-size: 0.8em; font-weight: bold;'>MARSHALLIAN</div> -->
     <div style='color: #f93; background-color: #fff; font-size: 1.2em; font-weight: bold;'>HICKSIAN</div>
-    <!-- <div style='color: #79d; background-color: #fff; font-size: 0.8em; font-weight: bold;'>HICKSIAN</div> -->
     </td>
     <td colspan=2>
       <div style='color: #8bb; background-color: #fff; font-size: 1.2em; font-weight: bold;'>MARSHALLIAN</div>
@@ -78,38 +76,38 @@
   <tr>
     <td rowspan=2>ALLOCATION</td>
     <td><span>x</span></td>
-    <td><span id='initial_allocation_x'></span></td>
-    <td><span id='marshallian_response_x'></span></td>
-    <td><span id='hicksian_response_x'></span></td>
-    <td><div id='sub_x'></div></td>
-    <td><div id='income_x'></div></td>
-    <td><div id='total_x'></div></td>
+    <td><div class='myoutputs' id='initial_allocation_x'></div></td>
+    <td><div class='myoutputs' id='marshallian_response_x'></div></td>
+    <td><div class='myoutputs' id='hicksian_response_x'></div></td>
+    <td><div class='myoutputs' id='sub_x'></div></td>
+    <td><div class='myoutputs' id='income_x'></div></td>
+    <td><div class='myoutputs' id='total_x'></div></td>
   </tr>
   
   <tr>
     <td><span>y</span></td>
-    <td><span id='initial_allocation_y'></span></td>
-    <td><span id='marshallian_response_y'></span></td>
-    <td><span id='hicksian_response_y'></span></td>
-    <td><div id='sub_y'></div></td>
-    <td><div id='income_y'></div></td>
-    <td><div id='total_y'></div></td>
+    <td><div class='myoutputs' id='initial_allocation_y'></div></td>
+    <td><div class='myoutputs' id='marshallian_response_y'></div></td>
+    <td><div class='myoutputs' id='hicksian_response_y'></div></td>
+    <td><div class='myoutputs' id='sub_y'></div></td>
+    <td><div class='myoutputs' id='income_y'></div></td>
+    <td><div class='myoutputs' id='total_y'></div></td>
   </tr>
   
   <tr>
     <td>UTILITY</td>
     <td></td>
-    <td><span id='initial_utility'></span></td>
-    <td><span id='marshallian_utility'></span></td>
-    <td><span id='hicksian_utility'></span></td>
+    <td><div class='myoutputs' id='initial_utility'></div></td>
+    <td><div class='myoutputs' id='marshallian_utility'></div></td>
+    <td><div class='myoutputs' id='hicksian_utility'></div></td>
     <td colspan=3 rowspan=2></td>
   </tr>
   <tr>
     <td>EXPENDITURE</td>
     <td></td>
-    <td><span id='initial_expenditure'></span></td>
-    <td><span id='marshallian_expenditure'></span></td>
-    <td><span id='hicksian_expenditure'></span></td>
+    <td><div class='myoutputs' id='initial_expenditure'></div></td>
+    <td><div class='myoutputs' id='marshallian_expenditure'></div></td>
+    <td><div class='myoutputs' id='hicksian_expenditure'></div></td>
   </tr>
 
  </table>

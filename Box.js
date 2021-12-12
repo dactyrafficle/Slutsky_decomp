@@ -96,9 +96,9 @@ Box.prototype.RANGE_Y = function(min, max) {
 Box.prototype.CANVAS_SIZE = function(w, h) {
  this.data.dimension.w = w;
  this.data.dimension.h = h; 
- this.c.width = this.data.dimension.w;
- this.c.height = this.data.dimension.h;
- 
+ this.c.width = w;
+ this.c.height = h;
+
  // RESET ZOOM AND XLATE BY REAPPLYING THE RANGES
  this.RANGE_X(this.data.range.x.min, this.data.range.x.max);
  this.RANGE_Y(this.data.range.y.min, this.data.range.y.max);
@@ -626,11 +626,12 @@ Box.prototype.DRAW_LINE = function(obj) {
 
  this.ctx.lineWidth = line_width;
  
- this.ctx.strokeStyle = color_string;
- this.ctx.fillStyle = color_string;
+
+ // this.ctx.fillStyle = color_string;
  this.ctx.beginPath();
  this.ctx.moveTo(pixel0.x, pixel0.y);
  this.ctx.lineTo(pixel1.x, pixel1.y);
+ this.ctx.strokeStyle = color_string;
  this.ctx.stroke();
 
 }
@@ -847,7 +848,7 @@ Box.prototype.DRAW_VALUE = function(obj) {
 
 Box.prototype.DRAW_DEMAND_CURVE = function(obj) {
 
-  let line_width = 2;
+  let line_width = 1;
   let rx = 4;
   
   let line_color = {
@@ -863,7 +864,7 @@ Box.prototype.DRAW_DEMAND_CURVE = function(obj) {
     },
     'hicksian':{
       'initial':{
-        'x':'#f937',  // CASE 4 : INITIAL HICKSIAN X
+        'x':'#ffc266',  // CASE 4 : INITIAL HICKSIAN X
         'y':'#ffc266'   // CASE 5 : INITIAL HICKSIAN Y
       },
       'final':{
@@ -944,16 +945,6 @@ Box.prototype.DRAW_DEMAND_CURVE = function(obj) {
 
     // CASE 6 : FINAL HICKSIAN X
     if (final_hicksian_x) {
-      
-      /*
-      let price = x;
-      let qty = u_0*(py_1/x*alpha_1/beta_1)**beta_1;
-      
-      if (obj.log) {
-        let ln_price = Math.log(price);
-        let ln_qty = Math.log(qty);
-      }
-      */
       
       if (obj.log) {
         

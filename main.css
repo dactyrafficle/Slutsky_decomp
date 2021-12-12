@@ -11,10 +11,7 @@ html, body {
  vertical-align: top;
 }
 
-canvas {
- border: 1px solid #aaa;
- /* margin: 1vh; */
-}
+
 .canvas-container {
  position: relative;
  display: inline-block;
@@ -38,4 +35,8 @@ canvas {
 input.myinputs {
   width: 100%;
   padding: 3px;
+}
+.myoutputs {
+  text-align: right;
+  margin-right: 5px;
 }

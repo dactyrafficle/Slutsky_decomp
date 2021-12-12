@@ -1,48 +1,47 @@
 function UPDATE_PARAMS() {
   
   let obj = {
-    'a':{
-      'alpha':parseFloat(document.getElementById('input_alpha_initial').value),
+    'INITIAL':{
+      'alpha':parseFloat(document.getElementById('input_alpha_INITIAL').value),
       'beta':0,
-      'budget':parseFloat(document.getElementById('input_budget_initial').value),
-      'px':parseFloat(document.getElementById('input_px_initial').value),
-      'py':parseFloat(document.getElementById('input_py_initial').value)
+      'budget':parseFloat(document.getElementById('input_budget_INITIAL').value),
+      'px':parseFloat(document.getElementById('input_px_INITIAL').value),
+      'py':parseFloat(document.getElementById('input_py_INITIAL').value)
     },
-    'b':{
-      'alpha':parseFloat(document.getElementById('input_alpha_final').value),
+    'FINAL':{
+      'alpha':parseFloat(document.getElementById('input_alpha_FINAL').value),
       'beta':0,
-      'budget':parseFloat(document.getElementById('input_budget_final').value),
-      'px':parseFloat(document.getElementById('input_px_final').value),
-      'py':parseFloat(document.getElementById('input_py_final').value)
+      'budget':parseFloat(document.getElementById('input_budget_FINAL').value),
+      'px':parseFloat(document.getElementById('input_px_FINAL').value),
+      'py':parseFloat(document.getElementById('input_py_FINAL').value)
     },
   }
 
-  obj.a.beta = (1-obj.a.alpha);
-  obj.b.beta = (1-obj.b.alpha);
+  obj.INITIAL.beta = (1-obj.INITIAL.alpha);
+  obj.FINAL.beta = (1-obj.FINAL.alpha);
 
-  document.getElementById('input_beta_initial').value = obj.a.beta;
-  document.getElementById('input_beta_final').value = obj.b.beta;
+  document.getElementById('input_beta_INITIAL').value = obj.INITIAL.beta;
+  document.getElementById('input_beta_FINAL').value = obj.FINAL.beta;
 
-  // console.log(obj);
   return obj;
 }
 
 function UPDATE_SOLUTIONS(obj) {
   
-  let alpha_0 = obj.a.alpha;
-  let alpha_1 = obj.b.alpha;
+  let alpha_0 = obj.INITIAL.alpha;
+  let alpha_1 = obj.FINAL.alpha;
   
-  let beta_0 = obj.a.beta;
-  let beta_1 = obj.b.beta;
+  let beta_0 = obj.INITIAL.beta;
+  let beta_1 = obj.FINAL.beta;
   
-  let budget_0 = obj.a.budget;
-  let budget_1 = obj.b.budget;
+  let budget_0 = obj.INITIAL.budget;
+  let budget_1 = obj.FINAL.budget;
 
-  let px_0 = obj.a.px;
-  let px_1 = obj.b.px;
+  let px_0 = obj.INITIAL.px;
+  let px_1 = obj.FINAL.px;
   
-  let py_0 = obj.a.py;
-  let py_1 = obj.b.py;
+  let py_0 = obj.INITIAL.py;
+  let py_1 = obj.FINAL.py;
 
   let x_0 = alpha_0 * budget_0 / px_0;
   let y_0 = beta_0 * budget_0 / py_0;
@@ -60,16 +59,16 @@ function UPDATE_SOLUTIONS(obj) {
   let budget_c = px_1*xc_1 + py_1*yc_1;
 
   return {
-    'alpha_0': obj.a.alpha,
-    'alpha_1': obj.b.alpha,
-    'beta_0': obj.a.beta,
-    'beta_1': obj.b.beta,
-    'budget_0': obj.a.budget,
-    'budget_1': obj.b.budget,
-    'px_0': obj.a.px,
-    'px_1': obj.b.px,
-    'py_0': obj.a.py,
-    'py_1': obj.b.py,
+    'alpha_0': obj.INITIAL.alpha,
+    'alpha_1': obj.FINAL.alpha,
+    'beta_0': obj.INITIAL.beta,
+    'beta_1': obj.FINAL.beta,
+    'budget_0': obj.INITIAL.budget,
+    'budget_1': obj.FINAL.budget,
+    'px_0': obj.INITIAL.px,
+    'px_1': obj.FINAL.px,
+    'py_0': obj.INITIAL.py,
+    'py_1': obj.FINAL.py,
     'x_0': alpha_0 * budget_0 / px_0,
     'y_0': beta_0 * budget_0 / py_0,
     'u_0': x_0**alpha_0*y_0**beta_0,
@@ -131,15 +130,15 @@ function RESET_PARAMS() {
     },
   }
   
-  document.getElementById('input_alpha_initial').value = obj.a.alpha;
-  document.getElementById('input_beta_initial').value = obj.a.beta;
-  document.getElementById('input_budget_initial').value = obj.a.budget;
-  document.getElementById('input_px_initial').value = obj.a.px;
-  document.getElementById('input_py_initial').value = obj.a.py;
+  document.getElementById('input_alpha_INITIAL').value = obj.INITIAL.alpha;
+  document.getElementById('input_beta_INITIAL').value = obj.INITIAL.beta;
+  document.getElementById('input_budget_INITIAL').value = obj.INITIAL.budget;
+  document.getElementById('input_px_INITIAL').value = obj.INITIAL.px;
+  document.getElementById('input_py_INITIAL').value = obj.INITIAL.py;
 
-  document.getElementById('input_alpha_final').value = obj.b.alpha;
-  document.getElementById('input_beta_final').value = obj.b.beta;
-  document.getElementById('input_budget_final').value = obj.b.budget;
-  document.getElementById('input_px_final').value = obj.b.px;
-  document.getElementById('input_py_final').value = obj.b.py;
+  document.getElementById('input_alpha_FINAL').value = obj.FINAL.alpha;
+  document.getElementById('input_beta_FINAL').value = obj.FINAL.beta;
+  document.getElementById('input_budget_FINAL').value = obj.FINAL.budget;
+  document.getElementById('input_px_FINAL').value = obj.FINAL.px;
+  document.getElementById('input_py_FINAL').value = obj.FINAL.py;
 }

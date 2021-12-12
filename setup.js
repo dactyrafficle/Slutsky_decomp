@@ -7,7 +7,7 @@ let PARAMS;
 let SOLUTIONS;
 let my_inputs = document.getElementsByClassName('myinputs');
 
-let RESIZE = true;
+let RESIZE = false;
 
 function RESIZE_CANVASES(RESIZE) {
   
@@ -137,7 +137,7 @@ function rescaleBoxes(obj) {
 
   // SCALING THE NON-LOG GRAPHS
 
-  px_arr = [obj.a.px, obj.b.px, obj.a.py, obj.b.py].sort(function(a,b) {
+  px_arr = [obj.INITIAL.px, obj.FINAL.px, obj.INITIAL.py, obj.FINAL.py].sort(function(a,b) {
     return a - b;
   });
   x_min = px_arr[0];
@@ -188,17 +188,17 @@ function update_b(PARAMS, SOLUTIONS) {
   b.SHOW_GRID_Y({'dy':10});
 
   let final_budget_line = b.DRAW_BUDGET_LINE({
-    'budget':PARAMS.b.budget,
-    'px':PARAMS.b.px,
-    'py':PARAMS.b.py,
+    'budget':PARAMS.FINAL.budget,
+    'px':PARAMS.FINAL.px,
+    'py':PARAMS.FINAL.py,
     'line_width':2,
     'color_string':'#d1e0e0'
   });
 
   let initial_budget_line = b.DRAW_BUDGET_LINE({
-    'budget':PARAMS.a.budget,
-    'px':PARAMS.a.px,
-    'py':PARAMS.a.py,
+    'budget':PARAMS.INITIAL.budget,
+    'px':PARAMS.INITIAL.px,
+    'py':PARAMS.INITIAL.py,
     'line_width':2,
     'color_string':'#ffe6b3'
   });
@@ -206,20 +206,20 @@ function update_b(PARAMS, SOLUTIONS) {
   // HICKSIAN
   let final_hicksian_budget_line = b.DRAW_BUDGET_LINE({
     'budget':SOLUTIONS.budget_c,
-    'px':PARAMS.b.px,
-    'py':PARAMS.b.py,
+    'px':PARAMS.FINAL.px,
+    'py':PARAMS.FINAL.py,
     'line_width':2,
     'color_string':'#c2d1f0'
   });
   
   // AFTER A PRICE CHANGE (NOT VISIBLE) OR PREFERENCE CHANGE (VISIBLE), THIS IS THE UTILITY CURVE WHICH IS EQUIVALENT TO THE ORIGINAL
   let final_hicksian = b.DRAW_ISOQUANT({
-    'alpha':PARAMS.b.alpha,
-    'beta':PARAMS.b.beta,
+    'alpha':PARAMS.FINAL.alpha,
+    'beta':PARAMS.FINAL.beta,
     'u':SOLUTIONS.u_0,
-    /*'budget':PARAMS.b.budget,
-    'px':PARAMS.b.px,
-    'py':PARAMS.b.py,*/
+    /*'budget':PARAMS.FINAL.budget,
+    'px':PARAMS.FINAL.px,
+    'py':PARAMS.FINAL.py,*/
     'line_width':1,
     'color_string':'#c2d1f0'
   });
@@ -229,8 +229,8 @@ function update_b(PARAMS, SOLUTIONS) {
   
   // or would the initial hicksian be : take your new marshallian, that is like what change in E ?
   let initial_hicksian = b.DRAW_ISOQUANT({
-    'alpha':PARAMS.a.alpha,
-    'beta':PARAMS.a.beta,
+    'alpha':PARAMS.INITIAL.alpha,
+    'beta':PARAMS.INITIAL.beta,
     'u':SOLUTIONS.u_1,
     'color_string':'#f937'
   });
@@ -245,20 +245,20 @@ function update_b(PARAMS, SOLUTIONS) {
   });
 
   let final_marshallian = b.DRAW_ISOQUANT({
-    'alpha':PARAMS.b.alpha,
-    'beta':PARAMS.b.beta,
-    'budget':PARAMS.b.budget,
-    'px':PARAMS.b.px,
-    'py':PARAMS.b.py,
+    'alpha':PARAMS.FINAL.alpha,
+    'beta':PARAMS.FINAL.beta,
+    'budget':PARAMS.FINAL.budget,
+    'px':PARAMS.FINAL.px,
+    'py':PARAMS.FINAL.py,
     'color_string':'#d1e0e0'
   });
 
   let initial_marshallian = b.DRAW_ISOQUANT({
-    'alpha':PARAMS.a.alpha,
-    'beta':PARAMS.a.beta,
-    'budget':PARAMS.a.budget,
-    'px':PARAMS.a.px,
-    'py':PARAMS.a.py,
+    'alpha':PARAMS.INITIAL.alpha,
+    'beta':PARAMS.INITIAL.beta,
+    'budget':PARAMS.INITIAL.budget,
+    'px':PARAMS.INITIAL.px,
+    'py':PARAMS.INITIAL.py,
     'color_string':'#ffe6b3'
   });
   
@@ -266,6 +266,7 @@ function update_b(PARAMS, SOLUTIONS) {
  
 };
 
+// LOG X
 function update_bx(PARAMS) {
   
   bx.CLEAR_CANVAS();
@@ -274,14 +275,12 @@ function update_bx(PARAMS) {
   bx.SHOW_GRID_X({'dx':0.5,'color_string':'#eee'});
   bx.SHOW_GRID_X({'dx':1,'color_string':'#ccc'});
   
-  // bx.SHOW_FLOATING_LOG_X_AXIS();
-  
   let drawing = bx.DRAW_DEMAND_CURVE({
-    'alpha':[PARAMS.a.alpha,PARAMS.b.alpha],
-    'beta':[PARAMS.a.beta,PARAMS.b.beta],
-    'budget':[PARAMS.a.budget,PARAMS.b.budget],
-    'px':[PARAMS.a.px,PARAMS.b.px],
-    'py':[PARAMS.a.py,PARAMS.b.py],
+    'alpha':[PARAMS.INITIAL.alpha,PARAMS.FINAL.alpha],
+    'beta':[PARAMS.INITIAL.beta,PARAMS.FINAL.beta],
+    'budget':[PARAMS.INITIAL.budget,PARAMS.FINAL.budget],
+    'px':[PARAMS.INITIAL.px,PARAMS.FINAL.px],
+    'py':[PARAMS.INITIAL.py,PARAMS.FINAL.py],
     'marshallian':true,
     'hicksian':true,
     'log':true,
@@ -290,6 +289,7 @@ function update_bx(PARAMS) {
   });
 };
 
+// LOG Y
 function update_by(PARAMS) {
   
   by.CLEAR_CANVAS();
@@ -299,11 +299,11 @@ function update_by(PARAMS) {
   by.SHOW_GRID_X({'dx':1,'color_string':'#ccc'});
 
   let drawing = by.DRAW_DEMAND_CURVE({
-    'alpha':[PARAMS.a.alpha,PARAMS.b.alpha],
-    'beta':[PARAMS.a.beta,PARAMS.b.beta],
-    'budget':[PARAMS.a.budget,PARAMS.b.budget],
-    'px':[PARAMS.a.px,PARAMS.b.px],
-    'py':[PARAMS.a.py,PARAMS.b.py],
+    'alpha':[PARAMS.INITIAL.alpha,PARAMS.FINAL.alpha],
+    'beta':[PARAMS.INITIAL.beta,PARAMS.FINAL.beta],
+    'budget':[PARAMS.INITIAL.budget,PARAMS.FINAL.budget],
+    'px':[PARAMS.INITIAL.px,PARAMS.FINAL.px],
+    'py':[PARAMS.INITIAL.py,PARAMS.FINAL.py],
     'marshallian':true,
     'hicksian':true,
     'log':true,
@@ -319,11 +319,11 @@ function update_bxx(PARAMS) {
   bxx.SHOW_GRID_Y({'dy':10});
 
   let drawing = bxx.DRAW_DEMAND_CURVE({
-    'alpha':[PARAMS.a.alpha,PARAMS.b.alpha],
-    'beta':[PARAMS.a.beta,PARAMS.b.beta],
-    'budget':[PARAMS.a.budget,PARAMS.b.budget],
-    'px':[PARAMS.a.px,PARAMS.b.px],
-    'py':[PARAMS.a.py,PARAMS.b.py],
+    'alpha':[PARAMS.INITIAL.alpha,PARAMS.FINAL.alpha],
+    'beta':[PARAMS.INITIAL.beta,PARAMS.FINAL.beta],
+    'budget':[PARAMS.INITIAL.budget,PARAMS.FINAL.budget],
+    'px':[PARAMS.INITIAL.px,PARAMS.FINAL.px],
+    'py':[PARAMS.INITIAL.py,PARAMS.FINAL.py],
     'marshallian':true,
     'hicksian':true,
     'x':[1,1],
@@ -339,11 +339,11 @@ function update_byy(PARAMS) {
   byy.SHOW_GRID_Y({'dy':10});
 
   let drawing = byy.DRAW_DEMAND_CURVE({
-    'alpha':[PARAMS.a.alpha,PARAMS.b.alpha],
-    'beta':[PARAMS.a.beta,PARAMS.b.beta],
-    'budget':[PARAMS.a.budget,PARAMS.b.budget],
-    'px':[PARAMS.a.px,PARAMS.b.px],
-    'py':[PARAMS.a.py,PARAMS.b.py],
+    'alpha':[PARAMS.INITIAL.alpha,PARAMS.FINAL.alpha],
+    'beta':[PARAMS.INITIAL.beta,PARAMS.FINAL.beta],
+    'budget':[PARAMS.INITIAL.budget,PARAMS.FINAL.budget],
+    'px':[PARAMS.INITIAL.px,PARAMS.FINAL.px],
+    'py':[PARAMS.INITIAL.py,PARAMS.FINAL.py],
     'marshallian':true,
     'hicksian':true,
     'x':[0,0],
